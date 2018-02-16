@@ -1,0 +1,75 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.deleteContactById = exports.updateContactById = exports.getContactById = exports.getContacts = exports.addNewContact = undefined;
+
+var _crmModel = require('../model/crmModel');
+
+var _crmModel2 = _interopRequireDefault(_crmModel);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var addNewContact = exports.addNewContact = function addNewContact(req, res) {
+    // create one document
+    var newContact = new _crmModel2.default(req.body);
+
+    newContact.print();
+    // call instance save method
+    newContact.save(function (err, contact) {
+        if (err) {
+            res.send(err);
+        }
+        // response the newly added contact
+        res.json(contact);
+    });
+};
+
+var getContacts = exports.getContacts = function getContacts(req, res) {
+    // using Model to findout all documents.
+    // you can search the model with schema keywords.
+    // ContactModel.find({ firstName: 'sdfgsdfgsdfg' },(err, contacts) =>{});
+
+    _crmModel2.default.find(function (err, contacts) {
+        if (err) {
+            res.send(err);
+        }
+        res.json(contacts);
+    });
+};
+
+var getContactById = exports.getContactById = function getContactById(req, res) {
+    _crmModel2.default.findById(req.params.contactId, function (err, contact) {
+        if (err) {
+            res.send(err);
+        }
+        contact.print();
+        contact.findContactWithSameFirstName(function (err, list) {
+            if (err) {
+                console.log('error in finding.....');
+            }
+            console.log('find conacts with same firstname:', list);
+        });
+        res.json(contact);
+    });
+};
+
+var updateContactById = exports.updateContactById = function updateContactById(req, res) {
+    _crmModel2.default.findOneAndUpdate({ _id: req.params.contactId }, req.body, { new: true }, function (err, contact) {
+        if (err) {
+            res.send(err);
+        }
+        res.json(contact ? contact : { status: '[ERROR]:no such entity with id ' + req.params.contactId });
+    });
+};
+
+var deleteContactById = exports.deleteContactById = function deleteContactById(req, res) {
+    _crmModel2.default.deleteOne({ _id: req.params.contactId }, function (err, contact) {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ status: 'Successful delete entry with id ' + req.params.contactId });
+    });
+};
+//# sourceMappingURL=crmController.js.map
