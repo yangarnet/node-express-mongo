@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon ./app.js --exec babel-node -e js",
-    "compile": "babel src -d dist --source-maps --watch"
+    "compile": "babel src -d dist --source-maps --watch",
+    "build": "babel src -d dist --source-maps --watch"
   },
   "keywords": [
     "express",

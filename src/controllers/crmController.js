@@ -39,7 +39,7 @@ export const getContactById = (req, res) => {
             console.log('error in finding.....');
           }
           console.log('find conacts with same firstname:', list);
-        })
+        });
         res.json(contact);
     });
 };

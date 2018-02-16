@@ -1,0 +1,11 @@
+{
+    "esversion":6,
+    "undef":true,
+    "globals": {
+        "console": false,
+        "exports": false,
+        "__dirname":false,
+        "process": false
+    },
+    "node": true
+}
