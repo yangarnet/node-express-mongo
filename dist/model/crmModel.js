@@ -54,7 +54,7 @@ ContactSchema.methods.findContactWithSameFirstName = function (cb) {
 
 // now, compiling the schema into the model used by ctrl, herre 'contact' will be
 // the collection name in mongodb, will use ContactModel to interact in controllers.
-var ContactModel = _mongoose2.default.model('myContact', ContactSchema);
+var ContactModel = _mongoose2.default.model('contact', ContactSchema);
 
 exports.default = ContactModel;
 //# sourceMappingURL=crmModel.js.map

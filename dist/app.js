@@ -12,23 +12,15 @@ var _bodyParser = require('body-parser');
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-var _mongoose = require('mongoose');
-
-var _mongoose2 = _interopRequireDefault(_mongoose);
+var _config = require('./dbconfig/config');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
 var PORT = 3000;
-// setup mongo connection
-_mongoose2.default.Promise = global.Promise;
-_mongoose2.default.connect('mongodb://localhost:27017/myTestMongodb', { autoIndex: false }).then(function () {
-    console.log('you are connected!');
-}, function (err) {
-    console.log('[Sorry] - mongodb connection error');
-});
+(0, _config.dbConfig)();
 
-// setup body parser
+// setup body parser middleware
 app.use(_bodyParser2.default.urlencoded({ extended: true }));
 app.use(_bodyParser2.default.json());
 // get static resources from the plublic folder and display
