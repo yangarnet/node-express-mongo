@@ -11,6 +11,7 @@ dbConfig();
 // setup body parser middleware
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
 // get static resources from the plublic folder and display
 app.use(express.static('../public'));
 routes(app);
