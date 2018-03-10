@@ -1,0 +1,10 @@
+{
+    "_id": "mycontact.testmongodb",
+    "user": "testmongodb",
+    "pwd": "Passw0rd!",
+    "db": "mycontact",
+    "roles": [{
+        "role": "dbOwner",
+        "db": "mycontact"
+    }]
+}
