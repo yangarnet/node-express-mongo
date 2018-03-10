@@ -4,7 +4,7 @@
     "description": "RESTful service with express and mango db",
     "main": "app.js",
     "scripts": {
-        "start": "node ./app.js --exec babel-node -e js",
+        "start": "node ./src/app.js --exec babel-node -e js",
         "compile": "babel src -d dist --source-maps --watch",
         "build": "babel src -d dist --source-maps --watch"
     },

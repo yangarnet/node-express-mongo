@@ -13,7 +13,7 @@
             "outFiles": [
                 "${workspaceRoot}/src/**/*.js"
             ],
-            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node"
         }
     ]
 }

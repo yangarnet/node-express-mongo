@@ -5,7 +5,9 @@ import bodyParser from 'body-parser';
 import { dbConfig } from './dbconfig/config';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+console.log ('process.env.PORT', process.env.PORT);
+
 dbConfig();
 
 // setup body parser middleware
