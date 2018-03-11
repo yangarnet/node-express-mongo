@@ -37,3 +37,14 @@ the "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node", is the
         at bootstrap_node.js:608:3
     Waiting for the debugger to disconnect...
 */
+
+/*
+    and in the package.json  the following is the key to use ES6 feature in nodejs:
+    "scripts": {
+        "start": "babel-node --presets es2015 ./src/app.js",
+        "compile": "babel src -d dist --source-maps --watch",
+        "build": "babel src -d dist --source-maps --watch"
+    }
+
+    it is the  "babel-node --presets es2015 ./src/app.js" that makes 'npm start' works awesome. 
+*/

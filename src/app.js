@@ -18,6 +18,11 @@ app.use(bodyParser.json());
 app.use(express.static('../public'));
 routes(app);
 
+app.use('/', (req, res, next) => {
+    alert('have new request');
+    next();
+});
+
 app.get('/', (req, res) => {
     res.send('you are sending data back , thx');
 });
