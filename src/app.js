@@ -19,7 +19,6 @@ app.use(express.static('../public'));
 routes(app);
 
 app.use('/', (req, res, next) => {
-    alert('have new request');
     next();
 });
 

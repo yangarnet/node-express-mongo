@@ -1,4 +1,5 @@
 import { addNewContact, getContacts, getContactById, updateContactById, deleteContactById } from '../controllers/crmController';
+import todoController from '../controllers/TodoController';
 
 const routes = (app) => {
     app.route('/contacts')
@@ -15,6 +16,12 @@ const routes = (app) => {
        .get(getContactById)
        .put(updateContactById)
        .delete(deleteContactById);
+    
+    // add a new controller and use it methods
+    const todoCtrl = new todoController();
+    app.route('/to-do')
+       .get(todoCtrl.getTodo)
+       .post(todoCtrl.addTodo);
 };
 
 export default routes;

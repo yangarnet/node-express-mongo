@@ -8,11 +8,14 @@ const Schema = mongoose.Schema;
 const ContactSchema = new Schema({
     firstName: {
         type: String,
-        required: 'Enter a first Name'
+        required: 'Enter a first Name',
+        minlength: 2
     },
     lastName: {
         type: String,
-        required: 'Enter a last Name'
+        required: 'Enter a last Name',
+        minlength: 2,
+        trim: true
     },
     email: {
         type: String,
@@ -21,7 +24,8 @@ const ContactSchema = new Schema({
         required: 'Enter a email addres'
     },
     company: {
-        type: String
+        type: String,
+        trim: true
     },
     phone: {
         type: Number

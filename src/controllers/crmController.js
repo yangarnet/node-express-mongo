@@ -1,17 +1,23 @@
 import ContactModel from '../model/crmModel';
 
 export const addNewContact = (req, res) => {
-    // create one document
+    
+    // create a new document from the model by passing req.body
     let newContact = new ContactModel(req.body);
 
     newContact.print();
     // call instance save method
-    newContact.save((err, contact) => {
-        if (err) {
-            res.send(err);
-        }
-        // response the newly added contact
-        res.json(contact);
+    // newContact.save((err, contact) => {
+    //     if (err) {
+    //         res.send(err);
+    //     }
+    //     // response the newly added contact
+    //     res.json(contact);
+    // });
+    newContact.save().then(resoponse => {
+        res.json(resoponse);
+    }, error => {
+        res.send(error);
     });
 };
 
