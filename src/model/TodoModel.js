@@ -6,6 +6,8 @@ const todo = {
     content: {
         type: String,
         required: true,
+        index: true,
+        unique: true,
         get: value => value.toUpperCase(),
         set: value => value.toLowerCase(),
         minlength: 2,
