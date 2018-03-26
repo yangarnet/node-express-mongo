@@ -16,6 +16,8 @@ app.use(bodyParser.json());
 
 // get static resources from the plublic folder and display
 app.use(express.static('../public'));
+
+// in the following, will expose all the urls available
 routes(app);
 
 app.use('/', (req, res, next) => {
