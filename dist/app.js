@@ -17,15 +17,23 @@ var _config = require('./dbconfig/config');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
+console.log('process.env.PORT', process.env.PORT);
 (0, _config.dbConfig)();
 
 // setup body parser middleware
 app.use(_bodyParser2.default.urlencoded({ extended: true }));
 app.use(_bodyParser2.default.json());
+
 // get static resources from the plublic folder and display
 app.use(_express2.default.static('../public'));
+
+// in the following, will expose all the urls available
 (0, _crmRoutes2.default)(app);
+
+app.use('/', function (req, res, next) {
+    next();
+});
 
 app.get('/', function (req, res) {
     res.send('you are sending data back , thx');

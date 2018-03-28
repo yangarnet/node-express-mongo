@@ -2,23 +2,26 @@ import { addNewContact, getContacts, getContactById, updateContactById, deleteCo
 import todoController from '../controllers/TodoController';
 
 const routes = (app) => {
+    // just use the app.route('path').method().......
     app.route('/contacts')
        .get((req, res, next) => {
            // see how to use middleware
            console.log(`Request from:${req.originalUrl}`);
            console.log(`Request type:${req.method}`);
-           next(); 
+           next();
         }, getContacts)
        //add new contact
        .post(addNewContact);
-    
+
     app.route('/contacts/:contactId')
        .get(getContactById)
        .put(updateContactById)
        .delete(deleteContactById);
-    
+
     // add a new controller and use it methods
     const todoCtrl = new todoController();
+    
+    // chaining all types of request to this route
     app.route('/to-do')
        .get(todoCtrl.getTodo)
        .post(todoCtrl.addTodo);

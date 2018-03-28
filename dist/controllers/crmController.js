@@ -12,17 +12,23 @@ var _crmModel2 = _interopRequireDefault(_crmModel);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var addNewContact = exports.addNewContact = function addNewContact(req, res) {
-    // create one document
+
+    // create a new document from the model by passing req.body
     var newContact = new _crmModel2.default(req.body);
 
     newContact.print();
     // call instance save method
-    newContact.save(function (err, contact) {
-        if (err) {
-            res.send(err);
-        }
-        // response the newly added contact
-        res.json(contact);
+    // newContact.save((err, contact) => {
+    //     if (err) {
+    //         res.send(err);
+    //     }
+    //     // response the newly added contact
+    //     res.json(contact);
+    // });
+    newContact.save().then(function (resoponse) {
+        res.json(resoponse);
+    }, function (error) {
+        res.send(error);
     });
 };
 

@@ -19,11 +19,14 @@ var Schema = _mongoose2.default.Schema;
 var ContactSchema = new Schema({
     firstName: {
         type: String,
-        required: 'Enter a first Name'
+        required: 'Enter a first Name',
+        minlength: 2
     },
     lastName: {
         type: String,
-        required: 'Enter a last Name'
+        required: 'Enter a last Name',
+        minlength: 2,
+        trim: true
     },
     email: {
         type: String,
@@ -32,7 +35,8 @@ var ContactSchema = new Schema({
         required: 'Enter a email addres'
     },
     company: {
-        type: String
+        type: String,
+        trim: true
     },
     phone: {
         type: Number

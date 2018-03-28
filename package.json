@@ -4,9 +4,9 @@
     "description": "RESTful service with express and mango db",
     "main": "app.js",
     "scripts": {
-        "start": "babel-node --presets es2015 ./src/app.js",
-        "compile": "babel src -d dist --source-maps --watch",
-        "build": "babel src -d dist --source-maps --watch"
+        "start": "babel-node --presets es2015 app.js",
+        "compile": "babel app.js src -d dist --source-maps --watch",
+        "build": "babel app.js src -d dist --source-maps --watch"
     },
     "keywords": [
         "express",
