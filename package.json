@@ -6,7 +6,8 @@
     "scripts": {
         "start": "babel-node --presets es2015 app.js",
         "compile": "babel app.js src -d dist --source-maps --watch",
-        "build": "babel app.js src -d dist --source-maps --watch"
+        "build": "babel app.js src -d dist --source-maps --watch",
+        "test": "mocha "
     },
     "keywords": [
         "express",
