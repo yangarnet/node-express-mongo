@@ -15,7 +15,7 @@ middleWare(app);
 routes(app);
 
 app.get('/', (req, res) => {
-    res.send('you are sending data back , thx');
+    res.send('this app is running on Nodejs');
 });
 
 app.listen(PORT, () => {
