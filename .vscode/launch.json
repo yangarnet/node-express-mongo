@@ -9,8 +9,9 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Node App",
-            "program": "${workspaceRoot}/src/app.js",
+            "program": "${workspaceRoot}/app.js",
             "outFiles": [
+                "${workspaceRoot}/*.js",
                 "${workspaceRoot}/src/**/*.js"
             ],
             "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node"

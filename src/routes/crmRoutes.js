@@ -22,6 +22,11 @@ const routes = (app) => {
     const todoCtrl = new todoController();
     
     // chaining all types of request to this route
+    // app.get('/to-do', (req, res, next) => {
+    //     console.log('GET request to-do');
+    //     next();
+    // });
+
     app.route('/to-do')
        .get(todoCtrl.getTodo)
        .post(todoCtrl.addTodo);
