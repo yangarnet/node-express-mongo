@@ -1,4 +1,4 @@
-import todoModel from '../model/TodoModel';
+import todoModel from '../models/TodoModel';
 
 // all the db related work will be around todoModel .
 class todoController {

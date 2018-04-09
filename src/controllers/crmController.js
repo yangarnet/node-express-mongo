@@ -1,9 +1,9 @@
-import ContactModel from '../model/crmModel';
+import contactModel from '../models/ContactModel';
 
 export const addNewContact = (req, res) => {
     
     // create a new document from the model by passing req.body
-    let newContact = new ContactModel(req.body);
+    let newContact = new contactModel(req.body);
 
     newContact.print();
     // call instance save method
@@ -26,7 +26,7 @@ export const getContacts = (req, res) => {
     // you can search the model with schema keywords.
     // ContactModel.find({ firstName: 'sdfgsdfgsdfg' },(err, contacts) =>{});
 
-    ContactModel.find((err, contacts) => {
+    contactModel.find((err, contacts) => {
         if (err) {
             res.send(err);
         }
@@ -35,7 +35,7 @@ export const getContacts = (req, res) => {
 };
 
 export const getContactById = (req, res) => {
-    ContactModel.findById(req.params.contactId, (err, contact) => {
+    contactModel.findById(req.params.contactId, (err, contact) => {
         if (err) {
             res.send(err);
         }
@@ -51,7 +51,7 @@ export const getContactById = (req, res) => {
 };
 
 export const updateContactById = (req, res) => {
-    ContactModel.findOneAndUpdate(
+    contactModel.findOneAndUpdate(
         { _id: req.params.contactId }, req.body, {new: true},
         (err, contact) => {
             if (err) {
@@ -63,7 +63,7 @@ export const updateContactById = (req, res) => {
 };
 
 export const deleteContactById = (req, res) => {
-    ContactModel.deleteOne({_id:req.params.contactId}, (err, contact) => {
+    contactModel.deleteOne({_id:req.params.contactId}, (err, contact) => {
         if (err) {
             res.send(err);
         }

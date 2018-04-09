@@ -1,5 +1,9 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
@@ -26,10 +30,14 @@ console.log('process.env.PORT', process.env.PORT);
 (0, _crmRoutes2.default)(app);
 
 app.get('/', function (req, res) {
-    res.send('you are sending data back , thx');
+    res.send('this app is running on Nodejs');
 });
 
 app.listen(PORT, function () {
     console.log('server running @ port ' + PORT);
 });
+
+console.log('app.settings.env', app.settings.env);
+
+exports.default = app;
 //# sourceMappingURL=app.js.map

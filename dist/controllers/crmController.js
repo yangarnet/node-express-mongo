@@ -5,16 +5,16 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.deleteContactById = exports.updateContactById = exports.getContactById = exports.getContacts = exports.addNewContact = undefined;
 
-var _crmModel = require('../model/crmModel');
+var _ContactModel = require('../models/ContactModel');
 
-var _crmModel2 = _interopRequireDefault(_crmModel);
+var _ContactModel2 = _interopRequireDefault(_ContactModel);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var addNewContact = exports.addNewContact = function addNewContact(req, res) {
 
     // create a new document from the model by passing req.body
-    var newContact = new _crmModel2.default(req.body);
+    var newContact = new _ContactModel2.default(req.body);
 
     newContact.print();
     // call instance save method
@@ -37,7 +37,7 @@ var getContacts = exports.getContacts = function getContacts(req, res) {
     // you can search the model with schema keywords.
     // ContactModel.find({ firstName: 'sdfgsdfgsdfg' },(err, contacts) =>{});
 
-    _crmModel2.default.find(function (err, contacts) {
+    _ContactModel2.default.find(function (err, contacts) {
         if (err) {
             res.send(err);
         }
@@ -46,7 +46,7 @@ var getContacts = exports.getContacts = function getContacts(req, res) {
 };
 
 var getContactById = exports.getContactById = function getContactById(req, res) {
-    _crmModel2.default.findById(req.params.contactId, function (err, contact) {
+    _ContactModel2.default.findById(req.params.contactId, function (err, contact) {
         if (err) {
             res.send(err);
         }
@@ -62,7 +62,7 @@ var getContactById = exports.getContactById = function getContactById(req, res) 
 };
 
 var updateContactById = exports.updateContactById = function updateContactById(req, res) {
-    _crmModel2.default.findOneAndUpdate({ _id: req.params.contactId }, req.body, { new: true }, function (err, contact) {
+    _ContactModel2.default.findOneAndUpdate({ _id: req.params.contactId }, req.body, { new: true }, function (err, contact) {
         if (err) {
             res.send(err);
         }
@@ -71,7 +71,7 @@ var updateContactById = exports.updateContactById = function updateContactById(r
 };
 
 var deleteContactById = exports.deleteContactById = function deleteContactById(req, res) {
-    _crmModel2.default.deleteOne({ _id: req.params.contactId }, function (err, contact) {
+    _ContactModel2.default.deleteOne({ _id: req.params.contactId }, function (err, contact) {
         if (err) {
             res.send(err);
         }
