@@ -16,13 +16,11 @@ routes(app);
 
 app.get('/', (req, res) => {
     //res.send('this app is running on Nodejs');
-    res.end(app.settings);
+    res.end(JSON.stringify(app.settings));
 });
 
 app.listen(PORT, () => {
     console.log(`server running @ port ${PORT}`);
 });
-
-console.log('app', app.settings);
 
 export default app;
