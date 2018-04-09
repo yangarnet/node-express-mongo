@@ -1,4 +1,4 @@
-import { addNewContact, getContacts, getContactById, updateContactById, deleteContactById } from '../controllers/crmController';
+import * as contacts from '../controllers/ContactsController';
 import todoController from '../controllers/TodoController';
 
 const routes = (app) => {
@@ -9,14 +9,14 @@ const routes = (app) => {
            console.log(`Request from:${req.originalUrl}`);
            console.log(`Request type:${req.method}`);
            next();
-        }, getContacts)
+        }, contacts.getContacts)
        //add new contact
-       .post(addNewContact);
+       .post(contacts.addNewContact);
 
     app.route('/contacts/:contactId')
-       .get(getContactById)
-       .put(updateContactById)
-       .delete(deleteContactById);
+       .get(contacts.getContactById)
+       .put(contacts.updateContactById)
+       .delete(contacts.deleteContactById);
 
     // add a new controller and use it methods
     const todoCtrl = new todoController();

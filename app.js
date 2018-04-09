@@ -1,21 +1,18 @@
-"use strict";
+'use strict';
 
 import express from 'express';
-import routes from './src/routes/crmRoutes';
-import { dbConfig } from './src/dbconfig/config';
+import routes from './src/routes/RoutesConfig';
+import { dbConfigure } from './src/dbconfig/config';
 import middleWare from './src/middleware/config';
 
-// create the app with express()
 const app = express();
 const PORT = process.env.PORT || 3000;
-console.log ('process.env.PORT', process.env.PORT);
 
-dbConfig();
+dbConfigure(app);
 middleWare(app);
 routes(app);
 
 app.get('/', (req, res) => {
-    //res.send('this app is running on Nodejs');
     res.end(JSON.stringify(app.settings));
 });
 

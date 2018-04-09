@@ -78,4 +78,4 @@ var deleteContactById = exports.deleteContactById = function deleteContactById(r
         res.json({ status: 'Successful delete entry with id ' + req.params.contactId });
     });
 };
-//# sourceMappingURL=crmController.js.map
+//# sourceMappingURL=ContactsController.js.map
