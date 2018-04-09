@@ -16,6 +16,7 @@ routes(app);
 
 app.get('/', (req, res) => {
     res.send('this app is running on Nodejs');
+    res.end(app.settings);
 });
 
 app.listen(PORT, () => {
