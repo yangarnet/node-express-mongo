@@ -41,6 +41,8 @@ var routes = function routes(app) {
    app.route('/to-do').get(todoCtrl.getTodo).post(todoCtrl.addTodo);
 
    app.route('/to-do/:todoId').get(todoCtrl.getTodoById).put(todoCtrl.updateTodoById).delete(todoCtrl.deleteTodoById);
+
+   app.route('/to-do/:todo').get(todoCtrl.getTodoByName);
 };
 
 exports.default = routes;

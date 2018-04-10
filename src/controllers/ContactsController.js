@@ -26,11 +26,11 @@ export const getContacts = (req, res) => {
     // you can search the model with schema keywords.
     // ContactModel.find({ firstName: 'sdfgsdfgsdfg' },(err, contacts) =>{});
 
-    contactModel.find((err, contacts) => {
+    contactModel.find({}, (err, contacts) => {
         if (err) {
             res.send(err);
         }
-        res.json(contacts);
+        res.json({contacts});
     });
 };
 

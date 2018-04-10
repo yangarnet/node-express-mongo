@@ -16,6 +16,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var todoModel = _mongoose2.default.model('todo', _todo2.default);
 
-// export the todoModle
 exports.default = todoModel;
 //# sourceMappingURL=TodoModel.js.map

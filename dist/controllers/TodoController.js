@@ -10,6 +10,8 @@ var _TodoModel = require('../models/TodoModel');
 
 var _TodoModel2 = _interopRequireDefault(_TodoModel);
 
+var _mongodb = require('mongodb');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25,9 +27,9 @@ var todoController = function () {
         value: function getTodo(req, res) {
             _TodoModel2.default.find({}, function (err, todos) {
                 if (err) {
-                    throw new Error(err);
+                    res.status(404).send(err);
                 } else {
-                    res.json(todos);
+                    res.json({ todos: todos });
                 }
             });
         }
@@ -40,7 +42,7 @@ var todoController = function () {
             newTodo.save().then(function (todo) {
                 res.json(todo);
             }, function (err) {
-                throw new Error(err);
+                res.status(400).send(err);
             });
         }
     }, {
@@ -48,11 +50,28 @@ var todoController = function () {
         value: function getTodoById(req, res) {
             // this todoId is the as the routes written
             var id = req.params.todoId;
-            _TodoModel2.default.findById(id, function (err, result) {
-                if (err) {
-                    throw new Error(err);
-                }
-                res.json(result);
+            if (_mongodb.ObjectID.isValid(id)) {
+                _TodoModel2.default.findById(id).then(function (todo) {
+                    if (!todo) {
+                        res.status(403).send();
+                    }
+                    // return an object is better
+                    res.json({ todo: todo });
+                }, function (err) {
+                    res.status(400).send(err);
+                });
+            } else {
+                res.status(404).send('ObjectID is invalid for query');
+            }
+        }
+    }, {
+        key: 'getTodoByName',
+        value: function getTodoByName(req, res) {
+            var todo = req.params.todo;
+            _TodoModel2.default.findOne({ _id: '', content: todo }).then(function (response) {
+                res.json(response);
+            }, function (err) {
+                throw new Error(err);
             });
         }
     }, {
@@ -80,13 +99,20 @@ var todoController = function () {
         key: 'deleteTodoById',
         value: function deleteTodoById(req, res) {
             var id = req.params.todoId;
-
-            _TodoModel2.default.findByIdAndRemove(id, function (err, result) {
-                if (err) {
-                    throw new Error(err);
-                }
-                res.json(result);
-            });
+            if (_mongodb.ObjectID.isValid(id)) {
+                _TodoModel2.default.findByIdAndRemove(id).then(function (todo) {
+                    if (!todo) {
+                        res.status(404).send();
+                    }
+                    res.send({ todo: todo });
+                }, function (err) {
+                    res.status(400).send(err);
+                }).catch(function (e) {
+                    res.status(400).send(e);
+                });
+            } else {
+                res.status(400).send();
+            }
         }
     }]);
 

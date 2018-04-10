@@ -25,10 +25,11 @@ var mongoDb = {
 };
 
 var dbConfigure = exports.dbConfigure = function dbConfigure(app) {
+    // get the app settings env object
     app.set('mongDbUrl', mongoDb[app.settings.env]);
 
     _mongoose2.default.connect(app.get('mongDbUrl'), { autoIndex: false }).then(function () {
-        console.log('you are connected!');
+        //console.log('you are connected!');
     }, function (err) {
         console.log('[Sorry] - mongodb connection error');
     });

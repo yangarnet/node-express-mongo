@@ -37,11 +37,11 @@ var getContacts = exports.getContacts = function getContacts(req, res) {
     // you can search the model with schema keywords.
     // ContactModel.find({ firstName: 'sdfgsdfgsdfg' },(err, contacts) =>{});
 
-    _ContactModel2.default.find(function (err, contacts) {
+    _ContactModel2.default.find({}, function (err, contacts) {
         if (err) {
             res.send(err);
         }
-        res.json(contacts);
+        res.json({ contacts: contacts });
     });
 };
 

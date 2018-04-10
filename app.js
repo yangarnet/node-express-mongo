@@ -6,7 +6,7 @@ import { dbConfigure } from './src/dbconfig/config';
 import middleWare from './src/middleware/config';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 dbConfigure(app);
 middleWare(app);
@@ -17,7 +17,8 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`server running @ port ${PORT}`);
+     console.log(`server running @ port ${PORT}`);
 });
 
+// export for supertest
 export default app;

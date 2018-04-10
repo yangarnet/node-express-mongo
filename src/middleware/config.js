@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 
 // how to use customised middleware
 const myLogger = (req, res, next) => {
-    console.log(`middleWare: request time: ${moment.unix(Date.now()/1000).format('DD-MM-YYYY HH:mm:ss')}`);
+    //console.log(`middleWare: request time: ${moment.unix(Date.now()/1000).format('DD-MM-YYYY HH:mm:ss')}`);
     next();
 };
 
@@ -30,7 +30,7 @@ const middleWare = (app) => {
 
     // response to any type of request to path /to-do
     app.use('/to-do', (req, res, next) => {
-        console.log('request to path /to-do');
+        //console.log('request to path /to-do');
         next();
     });
     // response to any type of request to path /to-do/:todoId

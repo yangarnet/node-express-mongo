@@ -1,4 +1,5 @@
 import todoModel from '../models/TodoModel';
+import { ObjectID } from 'mongodb';
 
 // all the db related work will be around todoModel .
 class todoController {
@@ -8,9 +9,9 @@ class todoController {
     getTodo(req, res) {
         todoModel.find({}, (err, todos) => {
             if (err) {
-                throw new Error(err);
+                res.status(404).send(err);
             } else {
-                res.json(todos);
+                res.json({todos});
             }
         });
     }
@@ -22,19 +23,36 @@ class todoController {
         newTodo.save().then(todo => {
             res.json(todo);
         }, err => {
-            throw new Error(err);
+            res.status(400).send(err);
         });
     }
 
     getTodoById(req, res) {
         // this todoId is the as the routes written
         const id = req.params.todoId;
-        todoModel.findById(id, (err, result) => {
-            if (err) {
-                throw new Error(err);
-            }
-            res.json(result);
-        });
+        if (ObjectID.isValid(id)) {
+            todoModel.findById(id).then(todo => {
+                if (!todo) {
+                    res.status(403).send();
+                }
+                // return an object is better
+                res.json({todo});
+            }, err => {
+                res.status(400).send(err);
+            });
+        } else {
+            res.status(404).send('ObjectID is invalid for query');
+        }
+    }
+
+    getTodoByName(req, res) {
+        const todo = req.params.todo;
+        todoModel.findOne({_id: '', content: todo})
+                 .then(response => {
+                     res.json(response);
+                 }, err => {
+                     throw new Error(err);
+                 });
     }
 
     updateTodoById(req, res) {
@@ -56,19 +74,29 @@ class todoController {
                 if (err) {
                     throw new Error(err);
                 }
-                res.json(updateResult)
+                res.json(updateResult);
             });
     }
 
     deleteTodoById(req, res) {
         const id = req.params.todoId;
-
-        todoModel.findByIdAndRemove(id, (err, result) => {
-            if (err) {
-                throw new Error(err);
-            }
-            res.json(result);
-        });
+        if (ObjectID.isValid(id)) {
+            todoModel.findByIdAndRemove(id)
+            .then(todo => {
+                if (!todo) {
+                    res.status(404).send();
+                }
+                res.send({todo});
+            }, err => {
+                res.status(400).send(err);
+            })
+            .catch(e => {
+                res.status(400).send(e);
+            });
+        }
+        else {
+            res.status(400).send();
+        }
     }
 }
 

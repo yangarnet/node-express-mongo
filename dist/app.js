@@ -21,8 +21,7 @@ var _config3 = _interopRequireDefault(_config2);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
-var PORT = process.env.PORT || 3000;
-console.log('process.env.PORT', process.env.PORT);
+var PORT = process.env.PORT || 3001;
 
 (0, _config.dbConfigure)(app);
 (0, _config3.default)(app);
@@ -36,5 +35,6 @@ app.listen(PORT, function () {
     console.log('server running @ port ' + PORT);
 });
 
+// export for supertest
 exports.default = app;
 //# sourceMappingURL=app.js.map

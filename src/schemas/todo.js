@@ -17,8 +17,7 @@ const todo = {
     },
     completed: {
         type: Boolean,
-        required: true,
-        default: false
+        required: true
     },
     lastUpdate: {
         type: Date,

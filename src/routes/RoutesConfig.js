@@ -35,6 +35,9 @@ const routes = (app) => {
        .get(todoCtrl.getTodoById)
        .put(todoCtrl.updateTodoById)
        .delete(todoCtrl.deleteTodoById);
+    
+    app.route('/to-do/:todo')
+       .get(todoCtrl.getTodoByName);
 };
 
 export default routes;

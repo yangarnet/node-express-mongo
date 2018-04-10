@@ -20,7 +20,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // how to use customised middleware
 var myLogger = function myLogger(req, res, next) {
-    console.log('middleWare: request time: ' + _moment2.default.unix(Date.now() / 1000).format('DD-MM-YYYY HH:mm:ss'));
+    //console.log(`middleWare: request time: ${moment.unix(Date.now()/1000).format('DD-MM-YYYY HH:mm:ss')}`);
     next();
 };
 
@@ -44,7 +44,7 @@ var middleWare = function middleWare(app) {
 
     // response to any type of request to path /to-do
     app.use('/to-do', function (req, res, next) {
-        console.log('request to path /to-do');
+        //console.log('request to path /to-do');
         next();
     });
     // response to any type of request to path /to-do/:todoId
