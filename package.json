@@ -8,7 +8,7 @@
         "start-watch": " nodemon --exec 'npm start'",
         "compile": "babel app.js src -d dist --source-maps --watch",
         "build": "babel app.js src -d dist --source-maps --watch",
-        "test": "mocha **/**/*.spec.js **/**/**/*.spec.js --require babel-core/register",
+        "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha **/**/*.spec.js **/**/**/*.spec.js --require babel-core/register",
         "test-watch": "nodemon --exec 'npm test'"
     },
     "keywords": [

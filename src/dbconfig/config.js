@@ -6,16 +6,15 @@ const user = configValue.user;
 const password = configValue.pwd;
 
 const mongoDb = {
-    development: 'mongodb://localhost:27017/myTestMongodb',
-    test: '',
-    production: `mongodb://${user}:${password}@ds139929.mlab.com:39929/mymongodb`
+    development:    'mongodb://localhost:27017/myDevMongodb',
+    test:           'mongodb://localhost:27017/myTestMongodb',
+    production:     `mongodb://${user}:${password}@ds139929.mlab.com:39929/mymongodb`
 };
 
-export const dbConfigure = (app) => {
+export const dbConfigure = (/*app*/env) => {
     // get the app settings env object
-    app.set('mongDbUrl', mongoDb[app.settings.env]);
-
-    mongoose.connect(app.get('mongDbUrl'), { autoIndex: false})
+    // app.set('mongDbUrl', mongoDb[app.settings.env]);
+    mongoose.connect(/*app.get('mongDbUrl')*/ mongoDb[env], { autoIndex: false})
             .then(() => {
                 //console.log('you are connected!');
             }, (err) => {

@@ -40,9 +40,6 @@ describe('test express app with todo controller', () => {
         it('should create a new todo', (done) => {
             const content = 'learn writing test for nodejs';
             const completed = true;
-
-            console.log(app.settings);
-            
             request(app)
                 .post('/to-do')
                 .send({content, completed})
