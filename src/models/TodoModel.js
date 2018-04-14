@@ -1,6 +1,9 @@
-import todoSchema from '../schemas/todo';
 import mongoose from 'mongoose';
+import todo from '../schemas/todo';
 
-const todoModel = mongoose.model('todo', todoSchema);
+const Schema = mongoose.Schema;
+const todoSchema = new Schema(todo);
 
-export default todoModel;
+// "mongoose.models.contact ||" is key to avoid error: 
+// OverwriteModelError: Cannot overwrite `todo` model once compiled.
+export const todoModel = mongoose.models.todo || mongoose.model('todo', todoSchema);

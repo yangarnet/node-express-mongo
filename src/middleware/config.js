@@ -35,7 +35,7 @@ const middleWare = (app) => {
     });
     // response to any type of request to path /to-do/:todoId
     app.use('/to-do/:todoId', (req, res, next) => {
-        console.log('request to path /to-do/:todoId');
+        //console.log('request to path /to-do/:todoId');
         next();
     });
 

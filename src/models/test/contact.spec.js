@@ -1,6 +1,6 @@
 import { expect, assert } from 'chai';
 import chai from 'chai';
-import contactModel from '../ContactModel';
+import { contactModel } from '../ContactModel';
 import sinon from 'sinon';
 
 const should = chai.should();

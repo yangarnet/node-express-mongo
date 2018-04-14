@@ -3,9 +3,6 @@
 /*
   support types: String, Boolean, Number, Date, Array, Mixed, ObjectId
 */
-import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
-
 const contact = {
     firstName: {
         type: String,
@@ -37,6 +34,5 @@ const contact = {
     }
 };
 
-const ContactSchema = new Schema(contact);
 
-export default ContactSchema;
+export default contact;

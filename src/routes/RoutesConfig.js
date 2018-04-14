@@ -34,7 +34,8 @@ const routes = (app) => {
     app.route('/to-do/:todoId')
        .get(todoCtrl.getTodoById)
        .put(todoCtrl.updateTodoById)
-       .delete(todoCtrl.deleteTodoById);
+       .delete(todoCtrl.deleteTodoById)
+       .patch(todoCtrl.patchTodoById);
     
     app.route('/to-do/:todo')
        .get(todoCtrl.getTodoByName);

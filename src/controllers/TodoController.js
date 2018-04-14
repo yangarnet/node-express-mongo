@@ -1,5 +1,6 @@
-import todoModel from '../models/TodoModel';
+import { todoModel } from '../models/TodoModel';
 import { ObjectID } from 'mongodb';
+import  _   from 'lodash';
 
 // all the db related work will be around todoModel .
 class todoController {
@@ -58,24 +59,43 @@ class todoController {
     updateTodoById(req, res) {
         const id = req.params.todoId;
 
+        // choose what you want to update
+        const body = _.pick(req.body, ['content', 'completed']);
         // see the following two about how to get documents
-        todoModel.findByIdAndUpdate(id, 
-            { completed: true }, // bit to update
-            (err, result) => {
-                if (err) {
-                    throw new Error(err);
-                }
-            });
+        if (!ObjectID.isValid(id)) {
+            return res.status(404).send();
+        }
 
-        todoModel.findOneAndUpdate(
-            { _id: req.params.todoId }, 
-            { content: 'set by findOneAndUpdate' },  // bit to update
-            (err, updateResult) => {
-                if (err) {
-                    throw new Error(err);
-                }
-                res.json(updateResult);
-            });
+        todoModel.findByIdAndUpdate(id, { $set: body }, {new: true})
+                .then(todo => {
+                    if (!todo) {
+                        return res.status(400).send();
+                    }
+                    res.send({todo});
+                })
+                .catch(e => {
+                    res.status(400).send();
+                });
+    }
+
+    // this is a better version to update the todo
+    patchTodoById(req, res) {
+        const id = req.params.todoId;
+        // now with lodash to pick whatever properties you want from the req body, nice
+        const body = _.pick(req.body, ['content', 'completed']);
+
+        if (!ObjectID.isValid(id)) {
+            return res.status(404).send();
+        }
+
+        todoModel.findByIdAndUpdate(id, { $set: body }, {new: true})
+                 .then(todo => {
+                     if (!todo) {
+                         return res.status(400).send();
+                     }
+                     res.send({todo});
+                 })
+                 .catch(e => res.status(400).send());
     }
 
     deleteTodoById(req, res) {

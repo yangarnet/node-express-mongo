@@ -1,4 +1,4 @@
-import contactModel from '../models/ContactModel';
+import { contactModel } from '../models/ContactModel';
 
 export const addNewContact = (req, res) => {
     

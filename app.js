@@ -13,7 +13,7 @@ middleWare(app);
 routes(app);
 
 app.get('/', (req, res) => {
-    res.end(JSON.stringify(app.settings));
+    res.end(JSON.stringify(process.env));
 });
 
 app.listen(PORT, () => {

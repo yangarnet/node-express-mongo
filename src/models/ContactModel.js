@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
-import ContactSchema from '../schemas/contact';
+import contact from '../schemas/contact';
+
+const Schema = mongoose.Schema;
+const ContactSchema = new Schema(contact);
 
 // now you can add new methods to you schema.
 // NOTE: methods must be added to the schema before compiling it with mongoose.model()
@@ -17,6 +20,7 @@ ContactSchema.methods.findByEmail = function(cb) {
 };
 // now, compiling the schema into the model used by ctrl, herre 'contact' will be
 // the collection name in mongodb, will use ContactModel to interact in controllers.
-const contactModel = mongoose.model('contact', ContactSchema);
 
-export default contactModel;
+// "mongoose.models.contact ||" is key to avoid error: 
+// OverwriteModelError: Cannot overwrite `todo` model once compiled.
+export const contactModel = mongoose.models.contact || mongoose.model('contact', ContactSchema);

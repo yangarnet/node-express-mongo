@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 
-const Schema = mongoose.Schema;
-
 const todo = {
     content: {
         type: String,
@@ -12,8 +10,7 @@ const todo = {
         set: value => value.toLowerCase(),
         minlength: 2,
         trim: true,
-        default: '',
-        alias: 'todo'
+        default: ''
     },
     completed: {
         type: Boolean,
@@ -25,6 +22,4 @@ const todo = {
     }
 };
 
-const todoSchema = new Schema(todo);
-
-export default todoSchema;
+export default todo;
