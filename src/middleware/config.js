@@ -2,6 +2,7 @@
 import express from 'express';
 import moment from 'moment';
 import bodyParser from 'body-parser';
+import UserController from '../controllers/UserController';
 
 // how to use customised middleware
 const myLogger = (req, res, next) => {
@@ -38,6 +39,9 @@ const middleWare = (app) => {
         //console.log('request to path /to-do/:todoId');
         next();
     });
+
+    // user auth middleware
+    app.use('/find-me', UserController.authenticate);
 
 };
 

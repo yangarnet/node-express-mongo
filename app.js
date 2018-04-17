@@ -10,8 +10,6 @@ const dev = 'development';
 const env = process.env.NODE_ENV || dev;
 const PORT = process.env.PORT || 3001;
 
-console.log('env', env);
-
 dbConfigure(env);
 middleWare(app);
 routes(app);

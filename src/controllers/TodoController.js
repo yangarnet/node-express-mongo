@@ -1,6 +1,6 @@
 import { todoModel } from '../models/TodoModel';
 import { ObjectID } from 'mongodb';
-import  _   from 'lodash';
+import _ from 'lodash';
 
 // all the db related work will be around todoModel .
 class todoController {

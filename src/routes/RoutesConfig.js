@@ -1,5 +1,6 @@
 import * as contacts from '../controllers/ContactsController';
 import todoController from '../controllers/TodoController';
+import userController from '../controllers/UserController';
 
 const routes = (app) => {
     // just use the app.route('path').method().......
@@ -39,6 +40,15 @@ const routes = (app) => {
     
     app.route('/to-do/:todo')
        .get(todoCtrl.getTodoByName);
+    
+    const userCtrl = new userController();
+
+    app.route('/add-user')
+       .post(userCtrl.addNewUser);
+    
+    app.get('/find-me', (req,res) => {
+        res.send(req.user);
+    });
 };
 
 export default routes;
