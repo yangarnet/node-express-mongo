@@ -2,6 +2,7 @@
 import app from '../../app';
 import chai from 'chai';
 import request from 'supertest';
+import { todos, prepareTodos, users, prepareUsers } from './seed/seed';
 import { todoModel } from '../models/TodoModel';
 import sinon from 'sinon';
 import { ObjectID } from 'mongodb';
@@ -10,28 +11,9 @@ const should = chai.should();
 const expect = chai.expect;
 const assert = chai.assert;
 
-// this is hitting the dev database, not good! 
-// setup a test db instead
-const todos = [
-    {
-        _id: new ObjectID(),
-        content: 'first todo',
-        completed: true
-    },
-    {
-        _id: new ObjectID(),
-        content: 'sencond todo',
-        completed: false
-    }
-];
-// insert two todos by default.
-beforeEach(done => {
-    todoModel.remove()
-             .then(() => {
-                 return todoModel.insertMany(todos)
-                                 .then(() => done());
-            });
-});
+
+beforeEach(prepareTodos);
+beforeEach(prepareUsers);
 
 describe('test express app with todo controller', () => {
     'use strict';
