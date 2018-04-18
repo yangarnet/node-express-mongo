@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import user from '../schemas/user';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
+import bcrypt from 'bcryptjs';
 
 const Schema = mongoose.Schema;
 const UserSchema = new Schema(user);
@@ -37,5 +38,22 @@ UserSchema.statics.findByToken = function(token) {
         'tokens.access': 'auth'
     });
 };
+
+// user schema middleware, NOTE: have to passing next in function(next){}, arrow function not work
+UserSchema.pre('save', function(next) {
+    let user = this;
+
+    if (user.isModified('password')) {
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(user.password, salt, (err, hash) => {
+                user.password = hash;
+                next();
+            });
+        });
+
+    } else {
+        next();
+    }
+});
 
 export const userModel = mongoose.models.users || mongoose.model('users', UserSchema); 
