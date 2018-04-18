@@ -150,3 +150,44 @@ describe('test express app with todo controller', () => {
         });
     });
 });
+
+describe('User test case', () => {
+    describe('GET user /find-me', () => {
+        it('should return user if authenticated', (done) => {
+            request(app).get('/find-me')
+                        .set('x-auth', users[0].tokens[0].token)
+                        .expect(200)
+                        .expect(res => {
+                            expect(res.body._id).to.be.eq(users[0]._id.toHexString());
+                            expect(res.body.email).to.be.equal(users[0].email);
+                            done();
+                        })
+                        .catch(e=>done(e));
+        });
+
+        it('should NOT return user if UN-authenticated', (done) => {
+            request(app).get('/find-me')
+                        .set('x-auth', 'asdfasdfasdfasfasdfsad')
+                        .expect(401)
+                        .expect(res => {
+                            expect(res.body).to.deep.equal({});
+                        })
+                        .end(done())
+                        .catch(e=>done());
+        });
+    });
+
+    describe('POST add user /add-user', () => {
+        it('should create a new user for valid email address', (done) => {
+
+        });
+
+        it('should NOT create a new user if invalida request', (done) => {
+
+        });
+
+        it('should NOT create a new user if email in use', done => {
+            
+        });
+    });
+});
