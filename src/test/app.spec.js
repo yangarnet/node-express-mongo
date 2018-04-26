@@ -6,6 +6,7 @@ import { todos, prepareTodos, users, prepareUsers } from './seed/seed';
 import { todoModel } from '../models/TodoModel';
 import sinon from 'sinon';
 import { ObjectID } from 'mongodb';
+import { userModel } from '../models/UserModel';
 
 const should = chai.should();
 const expect = chai.expect;
@@ -151,7 +152,7 @@ describe('test express app with todo controller', () => {
     });
 });
 
-describe('User test case', () => {
+describe('User test case for GET & POST', () => {
     describe('GET user /find-me', () => {
         it('should return user if authenticated', (done) => {
             request(app).get('/find-me')
@@ -165,29 +166,55 @@ describe('User test case', () => {
                         .catch(e=>done(e));
         });
 
-        it('should NOT return user if UN-authenticated', (done) => {
+        it('should NOT return 401 if UN-authenticated', (done) => {
             request(app).get('/find-me')
                         .set('x-auth', 'asdfasdfasdfasfasdfsad')
                         .expect(401)
                         .expect(res => {
                             expect(res.body).to.deep.equal({});
+                            done();
                         })
-                        .end(done())
                         .catch(e=>done());
         });
     });
 
     describe('POST add user /add-user', () => {
         it('should create a new user for valid email address', (done) => {
-
+            let email = 'test@gmail.com';
+            let password = 'test-password';
+            request(app).post('/add-user')
+                        .send({email, password})
+                        .expect(200)
+                        .expect(res => {
+                            expect(res.headers['x-auth']).to.be.not.null;
+                            expect(res.body._id).to.be.not.null;
+                            expect(res.body.email).to.be.not.null;
+                        })
+                        .end(err => {
+                            if (err) {
+                                return done(err);
+                            }
+                            userModel.findOne({email})
+                                     .then(user => {
+                                         expect(user).to.be.not.null;
+                                         expect(user.password).to.not.equal(password);
+                                         done();
+                                     })
+                        });
         });
 
-        it('should NOT create a new user if invalida request', (done) => {
-
+        it('should NOT create a new user if invalid request', (done) => {
+            request(app).post('/add-user')
+                        .send({email: 'aasd', password: 'asdf'})
+                        .expect(400)
+                        .end(done());
         });
 
         it('should NOT create a new user if email in use', done => {
-            
+            request(app).post('/add-user')
+                        .send({email: users[0].email, password: 'asdf'})
+                        .expect(400)
+                        .end(done());
         });
     });
 });
