@@ -53,7 +53,8 @@ const routes = (app) => {
 
     // a new route for user login
     app.post('/user/login', userCtrl.logIn);
-
+    // delete user token after logout
+    app.delete('/user/me/token', userController.authenticate, userCtrl.removeToken);
 };
 
 export default routes;

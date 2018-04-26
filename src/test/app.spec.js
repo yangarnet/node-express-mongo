@@ -248,17 +248,36 @@ describe('User test case for GET & POST', () => {
                         .send({email: users[1].email, password: users[1].password + 'test'})
                         .expect(400)
                         .expect(res => {
-                            expect(res.headers['x-auth']).to.be.empty();
+                            expect(res.headers['x-auth']).to.be.undefined;
                         })
                         .end((err, res) => {
                             if (err) {
                                 return done(err);
                             }
-                            userModel.findById(users[1]._id)
+                            userModel.findOne(users[1]._id)
                                      .then(user => {
-                                         expect(user.tokens.length).to.be.equal(0);
+                                         expect(user.tokens.length).to.be.equal(1);
                                          done();
                                      }).catch(e => done(e));
+                        });
+        });
+    });
+
+    describe('DELETE: user token after logout', () => {
+        it("should remove auth token on logout", (done) => {
+            request(app).delete('/user/me/token')
+                        .set('x-auth', users[0].tokens[0].token)
+                        .expect(200)
+                        .end((err, res) => {
+                            if (err) {
+                                return done(err);
+                            }
+                            userModel.findById(users[0]._id)
+                                     .then(user => {
+                                         expect(user.tokens.length).to.be.eq(0);
+                                         done();
+                                     })
+                                     .catch(e=> done(e));
                         });
         });
     });
