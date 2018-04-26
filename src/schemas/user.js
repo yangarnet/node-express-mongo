@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 const user = {
     email: {
         type: String,
+        index: true,
         required: true,
         trim: true,
         minlength: 5,
