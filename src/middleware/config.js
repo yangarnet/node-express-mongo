@@ -3,6 +3,8 @@ import express from 'express';
 import moment from 'moment';
 import bodyParser from 'body-parser';
 import UserController from '../controllers/UserController';
+import helmet from 'helmet';
+import morgan from 'morgan';
 
 // how to use customised middleware
 const myLogger = (req, res, next) => {
@@ -13,6 +15,11 @@ const myLogger = (req, res, next) => {
 
 const middleWare = (app) => {
 
+    // setup http header and check app environment
+    app.use(helmet());
+    if (app.get('env') === 'development') {
+        app.use(morgan('tiny'));
+    }
     // setup body parser middleware
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());

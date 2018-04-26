@@ -15,7 +15,8 @@ middleWare(app);
 routes(app);
 
 app.get('/', (req, res) => {
-    res.end(JSON.stringify(process.env));
+    //res.end(JSON.stringify(process.env));
+    res.end(app.get('env'));
 });
 
 app.listen(PORT, () => {
