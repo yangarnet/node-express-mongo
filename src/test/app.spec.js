@@ -217,4 +217,49 @@ describe('User test case for GET & POST', () => {
                         .end(done());
         });
     });
+
+    describe('POST: user login', () => {
+        it('should log in user and return auth token', (done) => {
+            request(app).post('/user/login')
+                        .send({email: users[1].email, password: users[1].password})
+                        .expect(200)
+                        .expect(res => {
+                            expect(res.headers['x-auth']).to.be.not.null;
+                            expect(res.body._id).to.be.not.null;
+                            expect(res.body.email).to.be.equal(users[1].email);
+                        })
+                        .end((err, res) => {
+                            if (err) {
+                                return done(err);
+                            }
+                            userModel.findById(users[1]._id)
+                                     .then(user => {
+                                         expect(user.tokens[0]).include({
+                                             access: 'auth'
+                                             //token: res.headers['x-auth']
+                                         });
+                                         done();
+                                     }).catch(e => done(e));
+                        });
+        });
+
+        it('should reject invalid login', (done) => {
+            request(app).post('/user/login')
+                        .send({email: users[1].email, password: users[1].password + 'test'})
+                        .expect(400)
+                        .expect(res => {
+                            expect(res.headers['x-auth']).to.be.empty();
+                        })
+                        .end((err, res) => {
+                            if (err) {
+                                return done(err);
+                            }
+                            userModel.findById(users[1]._id)
+                                     .then(user => {
+                                         expect(user.tokens.length).to.be.equal(0);
+                                         done();
+                                     }).catch(e => done(e));
+                        });
+        });
+    });
 });

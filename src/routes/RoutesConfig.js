@@ -46,9 +46,14 @@ const routes = (app) => {
     app.route('/add-user')
        .post(userCtrl.addNewUser);
     
+    // will invoke the middleware for find-me
     app.get('/find-me', (req,res) => {
         res.send(req.user);
     });
+
+    // a new route for user login
+    app.post('/user/login', userCtrl.logIn);
+
 };
 
 export default routes;

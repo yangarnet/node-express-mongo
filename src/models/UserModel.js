@@ -3,6 +3,7 @@ import user from '../schemas/user';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 import bcrypt from 'bcryptjs';
+import { resolve } from 'path';
 
 const Schema = mongoose.Schema;
 const UserSchema = new Schema(user);
@@ -23,6 +24,7 @@ UserSchema.methods.genAuthToken = function() {
     return user.save().then(() => token).catch(e => console.log(e));
 };
 
+// do NOT declare static method with arrow function, 'this' will not be binding properly.
 UserSchema.statics.findByToken = function(token) {
     let User = this;
     let decoded;
@@ -55,5 +57,25 @@ UserSchema.pre('save', function(next) {
         next();
     }
 });
+
+UserSchema.statics.findByCredentials = function(email, password) {
+    let user = this;
+    return user.findOne({email})
+               .then(user => {
+                   if (!user) {
+                       return new Promise.reject();
+                   }
+                   return new Promise((resolve, reject) => {
+                       // with brcypt to compate hash string and original password string
+                       bcrypt.compare(password, user.password, (err, res) => {
+                           if (res) {
+                               resolve(user);
+                           } else {
+                               reject()
+                           }
+                       })
+                   });
+               })
+};
 
 export const userModel = mongoose.models.users || mongoose.model('users', UserSchema); 

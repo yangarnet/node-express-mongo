@@ -14,7 +14,9 @@ class UserController {
 
         user.save()
             .then(user => user.genAuthToken())
-            .then(token => { res.header('x-auth',token).send(user); })
+            .then(token => { 
+                res.header('x-auth',token).send(user); 
+            })
             .catch(err => res.status(400).send);
     }
 
@@ -33,6 +35,21 @@ class UserController {
                 .catch(e => { 
                     res.status(401).send();
                 });
+    }
+
+    logIn(req, res) {
+        const body = _.pick(req.body, ['email', 'password']);
+        
+        userModel.findByCredentials(body.email, body.password)
+                 .then(user => {
+                     return user.genAuthToken()
+                                .then(token=> {
+                                    res.header('x-auth', token).send(user);
+                                });
+                 })
+                 .catch(err => {
+                     res.status(400).send();
+                 });
     }
 
 }

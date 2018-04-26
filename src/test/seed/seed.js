@@ -18,7 +18,7 @@ export const users = [
     {
         _id: userTwoId,
         email: '456@gmail.com',
-        password: 'password',
+        password: '123456789',
         tokens:[{
             access: 'auth',
             token: jwt.sign({_id: userTwoId, access: 'auth'}, 'private-key').toString()
