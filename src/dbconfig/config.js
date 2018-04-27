@@ -2,6 +2,7 @@
 import mongoose from 'mongoose';
 import configValue  from './user.json';
 
+// cannot do this in prod
 const user = configValue.user;
 const password = configValue.pwd;
 

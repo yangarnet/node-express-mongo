@@ -90,4 +90,4 @@ UserSchema.methods.removeToken = function(token) {
 };
 
 
-export const userModel = mongoose.models.users || mongoose.model('users', UserSchema); 
+export const userModel =  mongoose.model('users', UserSchema); 

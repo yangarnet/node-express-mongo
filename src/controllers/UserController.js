@@ -7,12 +7,12 @@ import jwt from 'jsonwebtoken';
 class UserController {
     constructor() {}
 
-    addNewUser(req, res) {
+    async addNewUser(req, res) {
         // using lodash to return our payload.
         const payload = _.pick(req.body, ['email', 'password']);
         const user = new userModel(payload);
 
-        user.save()
+        await user.save()
             .then(user => user.genAuthToken())
             .then(token => { 
                 res.header('x-auth',token).send(user); 

@@ -23,4 +23,4 @@ ContactSchema.methods.findByEmail = function(cb) {
 
 // "mongoose.models.contact ||" is key to avoid error: 
 // OverwriteModelError: Cannot overwrite `todo` model once compiled.
-export const contactModel = mongoose.models.contact || mongoose.model('contact', ContactSchema);
+export const contactModel = mongoose.model('contact', ContactSchema);
