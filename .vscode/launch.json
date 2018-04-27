@@ -3,8 +3,30 @@
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": [
-
+    "configurations": [{
+            "type": "node",
+            "request": "launch",
+            "name": "Mocha Tests",
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "stopOnEntry": false,
+            "args": [
+                "-u",
+                "tdd",
+                "--timeout",
+                "999999",
+                "--colors",
+                "--require",
+                "babel-core/register",
+                "--require",
+                "babel-polyfill",
+                "${workspaceFolder}/src/test/app.spec.js"
+            ],
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
+            "internalConsoleOptions": "openOnSessionStart",
+            "env": {
+                "NODE_ENV": "testing"
+            }
+        },
         {
             "type": "node",
             "request": "launch",
@@ -48,4 +70,12 @@ the "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node", is the
     }
 
     it is the  "babel-node --presets es2015 ./src/app.js" that makes 'npm start' works awesome. 
+*/
+
+
+/*
+for this bit: "${workspaceRoot}/rewire-mock-data/test/order.spec.js"
+you can set it like:  ${workspaceRoot}/**/
+/*.spec.js
+to include any test case.
 */

@@ -17,7 +17,9 @@ class UserController {
             .then(token => { 
                 res.header('x-auth',token).send(user); 
             })
-            .catch(err => res.status(400).send);
+            .catch(err => {
+                res.status(400).send('invalid email address');
+            });
     }
 
     // auth middleware

@@ -15,9 +15,9 @@ const mongoDb = {
 export const dbConfigure = (/*app*/env) => {
     // get the app settings env object
     // app.set('mongDbUrl', mongoDb[app.settings.env]);
-    mongoose.connect(/*app.get('mongDbUrl')*/ mongoDb[env], { autoIndex: false})
+    mongoose.connect(/*app.get('mongDbUrl')*/ mongoDb[env])
             .then(() => {
-                //console.log('you are connected!');
+                console.log('you are connected!');
             }, (err) => {
                 console.log('[Sorry] - mongodb connection error');
             });
