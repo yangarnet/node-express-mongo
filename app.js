@@ -12,7 +12,7 @@ const dev = 'development';
 const env = process.env.NODE_ENV || dev;
 
 envConfig(env);
-dbConfigure();
+dbConfigure(env);
 middleWare(app);
 routes(app);
 
