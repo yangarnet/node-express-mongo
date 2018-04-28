@@ -8,16 +8,17 @@ import morgan from 'morgan';
 
 // how to use customised middleware
 const myLogger = (req, res, next) => {
-    //console.log(`middleWare: request time: ${moment.unix(Date.now()/1000).format('DD-MM-YYYY HH:mm:ss')}`);
+    console.log(`middleWare: request time: ${moment.unix(Date.now()/1000).format('DD-MM-YYYY HH:mm:ss')}`);
     next();
 };
 
 
 const middleWare = (app) => {
 
-    // setup http header and check app environment
+    // setup http header for security
     app.use(helmet());
     if (app.get('env') === 'development') {
+        // add the http request logger middleware
         app.use(morgan('tiny'));
     }
     // setup body parser middleware

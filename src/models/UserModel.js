@@ -29,6 +29,7 @@ UserSchema.statics.findByToken = function(token) {
     let User = this;
     let decoded;
     try {
+        // verify the token and 
         decoded = jwt.verify(token, 'private-key');
     } catch(e) {
        return Promise.reject();

@@ -31,12 +31,14 @@ export const todos = [
     {
         _id: new ObjectID(),
         content: 'first todo',
-        completed: true
+        completed: true,
+        _creator: userOneId
     },
     {
         _id: new ObjectID(),
         content: 'sencond todo',
-        completed: false
+        completed: false,
+        _creator: userTwoId
     }
 ];
 

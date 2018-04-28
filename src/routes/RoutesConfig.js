@@ -22,24 +22,19 @@ const routes = (app) => {
     // add a new controller and use it methods
     const todoCtrl = new todoController();
     
-    // chaining all types of request to this route
-    // app.get('/to-do', (req, res, next) => {
-    //     console.log('GET request to-do');
-    //     next();
-    // });
-
+    // put on the authentication here for get/post todo
     app.route('/to-do')
-       .get(todoCtrl.getTodo)
-       .post(todoCtrl.addTodo);
+       .get(userController.authenticate, todoCtrl.getTodo)
+       .post(userController.authenticate, todoCtrl.addTodo);
 
     app.route('/to-do/:todoId')
-       .get(todoCtrl.getTodoById)
-       .put(todoCtrl.updateTodoById)
-       .delete(todoCtrl.deleteTodoById)
-       .patch(todoCtrl.patchTodoById);
+       .get(userController.authenticate, todoCtrl.getTodoById)
+       .put(userController.authenticate, todoCtrl.updateTodoById)
+       .delete(userController.authenticate, todoCtrl.deleteTodoById)
+       .patch(userController.authenticate, todoCtrl.patchTodoById);
     
     app.route('/to-do/:todo')
-       .get(todoCtrl.getTodoByName);
+       .get(userController.authenticate, todoCtrl.getTodoByName);
     
     const userCtrl = new userController();
 

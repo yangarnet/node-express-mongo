@@ -25,7 +25,8 @@ describe('test express app with todo controller', () => {
             const completed = true;
             request(app)
                 .post('/to-do')
-                .send({content, completed})
+                .set('x-auth', users[0].tokens[0].token)
+                .send({content, completed, _creator: users[0]._id})
                 .expect(200)
                 .expect(res => {
                     expect(res.body.content).to.be.a('string');
@@ -48,6 +49,7 @@ describe('test express app with todo controller', () => {
         it('should NOT create a new todo with invalid data', (done) => {
             const content = 'learn write express test';
             request(app).post('/to-do')
+                        .set('x-auth', users[0].tokens[0].token)
                         .send({content})
                         .expect(400)
                         .end((err, res) => {
@@ -65,17 +67,19 @@ describe('test express app with todo controller', () => {
     });
  
     describe('GET todo', () => {
-        it('should get ALL todos : get("/to-do")', (done) => {
+        it('should get ALL todos for AUTHORISED user', (done) => {
             request(app).get('/to-do')
+                        .set('x-auth', users[0].tokens[0].token)
                         .expect(200)
                         .expect(res => {
                             expect(res.body.todos).not.null;
-                            expect(res.body.todos.length).to.be.eq(2);
+                            expect(res.body.todos.length).to.be.eq(1);
                         }).end(done);
         }).timeout(5000);
     
         it('should get todo by ID', (done) => {
             request(app).get(`/to-do/${todos[0]._id.toHexString()}`)
+                        .set('x-auth', users[0].tokens[0].token)
                         .expect(200)
                         .expect(response => {
                             expect(response.body.todo).not.null;
@@ -87,14 +91,16 @@ describe('test express app with todo controller', () => {
     
         it('GET:/to-do/:todoId - should return 404 when todo not found by id', (done) => {
             request(app).get(`/to-do/${(new ObjectID()).toHexString}`)
+                        .set('x-auth', users[0].tokens[0].token)
                         .expect(404)
                         .end(done);
         });
     
         it('GET:/to-do/:todoId - should return 404 for non-object ids', (done) => {
             request(app).get(`/to-do/asdfw45634563}`)
-            .expect(404)
-            .end(done);
+                        .set('x-auth', users[0].tokens[0].token)
+                        .expect(404)
+                        .end(done);
         });
     
     });
@@ -103,6 +109,7 @@ describe('test express app with todo controller', () => {
         it('DELETE:/to-do/:todoId - should delete todo by correct id', (done) => {
             const hexId = todos[0]._id.toHexString();
             request(app).delete(`/to-do/${hexId}`)
+                        .set('x-auth', users[0].tokens[0].token)
                         .expect(200)
                         .expect(res => {
                             expect(res.status).to.be.eq(200);
@@ -114,13 +121,14 @@ describe('test express app with todo controller', () => {
     });
    
     describe('PUT - PATCH todo', () => {
-        it('put - should update to do properly with right id', (done) => {
+        it('patch - should update to do properly with right id', (done) => {
             const id = todos[0]._id.toHexString();
             const update = {
                 content: 'this is the new todo content',
                 completed: true
             };
             request(app).put(`/to-do/${id}`)
+                        .set('x-auth', users[0].tokens[0].token)
                         .send(update)
                         .expect(200)
                         .expect(res => {
@@ -132,13 +140,14 @@ describe('test express app with todo controller', () => {
                         .end(done);
         });
 
-        it('patch - should update the todo properly with id', (done) => {
+        it('PATCH - should update the todo properly with id', (done) => {
             const id = todos[1]._id.toHexString();
             const toUpdate = {
                 content: 'learning nodejs and react',
                 completed: true
             };
             request(app).patch(`/to-do/${id}`)
+                        .set('x-auth', users[1].tokens[0].token)
                         .send(toUpdate)
                         .expect(200)
                         .expect(res => {

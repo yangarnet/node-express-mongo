@@ -18,7 +18,7 @@ class UserController {
                 res.header('x-auth',token).send(user); 
             })
             .catch(err => {
-                res.status(400).send('invalid email address');
+                res.status(400).send(err);
             });
     }
 
@@ -29,13 +29,15 @@ class UserController {
                  .then(user => {
                     if (!user) {
                         return Promise.reject();
-                    }
+                    }          
+                    // add new properties to request object 
+                    // after authenticated for associating user to todos
                     req.user = user;
                     req.token = token;
                     next();
                 })
                 .catch(e => { 
-                    res.status(401).send();
+                    res.status(401).send(e);
                 });
     }
 
@@ -50,7 +52,7 @@ class UserController {
                                 });
                  })
                  .catch(err => {
-                     res.status(400).send();
+                     res.status(400).send(err);
                  });
     }
 

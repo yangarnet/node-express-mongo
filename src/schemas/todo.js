@@ -18,6 +18,11 @@ const todo = {
     lastUpdate: {
         type: Date,
         default: Date.now
+    },
+    // associate the todo with a user
+    _creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
     }
 };
 

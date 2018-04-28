@@ -8,39 +8,48 @@ class todoController {
     constructor() {}
 
     getTodo(req, res) {
-        todoModel.find({}, (err, todos) => {
-            if (err) {
-                res.status(404).send(err);
-            } else {
-                res.json({todos});
-            }
-        });
+        todoModel.find({_creator: req.user._id})
+                 .then(todos => {
+                     res.send({todos});
+                 })
+                 .catch(err => {
+                     res.status(404).send();
+                 });
     }
 
     addTodo(req, res) {
         // new a document, each document is an instance of the Model
-        const newTodo = new todoModel(req.body);
-
-        newTodo.save().then(todo => {
-            res.json(todo);
-        }, err => {
-            res.status(400).send(err);
+        const payload = _.pick(req.body, ['content', 'completed']);
+        const newTodo = new todoModel({
+            content: payload.content,
+            completed: payload.completed,
+            // the req.user is set in static authenticate() in UserController
+            _creator: req.user._id
         });
+
+        newTodo.save()
+               .then(todo => {
+                    res.json(todo);
+                })
+                .catch(err => {
+                    res.status(400).send(err);
+                });
     }
 
     getTodoById(req, res) {
         // this todoId is the as the routes written
         const id = req.params.todoId;
         if (ObjectID.isValid(id)) {
-            todoModel.findById(id).then(todo => {
-                if (!todo) {
-                    res.status(403).send();
-                }
-                // return an object is better
-                res.json({todo});
-            }, err => {
-                res.status(400).send(err);
-            });
+        todoModel.findOne({ _id: id , _creator: req.user._id })
+                 .then(todo => {
+                    if (!todo) {
+                        return res.status(404).end();
+                    }
+                    res.json({todo});
+                 })
+                 .catch(err => {
+                    res.status(400).send(err);
+                 });
         } else {
             res.status(404).send('ObjectID is invalid for query');
         }
@@ -63,13 +72,13 @@ class todoController {
         const body = _.pick(req.body, ['content', 'completed']);
         // see the following two about how to get documents
         if (!ObjectID.isValid(id)) {
-            return res.status(404).send();
+            return res.status(404).end();
         }
 
-        todoModel.findByIdAndUpdate(id, { $set: body }, {new: true})
+        todoModel.findOneAndUpdate({ _id: id, _creator: req.user._id }, { $set: body }, {new: true})
                 .then(todo => {
                     if (!todo) {
-                        return res.status(400).send();
+                        return res.status(404).send();
                     }
                     res.send({todo});
                 })
@@ -88,10 +97,10 @@ class todoController {
             return res.status(404).send();
         }
 
-        todoModel.findByIdAndUpdate(id, { $set: body }, {new: true})
+        todoModel.findOneAndUpdate({ _id: id , _creator: req.user._id }, { $set: body }, {new: true})
                  .then(todo => {
                      if (!todo) {
-                         return res.status(400).send();
+                         return res.status(404).send();
                      }
                      res.send({todo});
                  })
