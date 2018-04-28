@@ -11,3 +11,7 @@
 
 ### setup ES6 code debug in VS
 #### see this page https://medium.com/@drcallaway/debugging-es6-in-visual-studio-code-4444db797954
+
+## deploy app on heroku
+### on your terminal:  $heroku create ;  $heroku addons:create mongolab:sandbox , after this command, you will see the mongodb connection string.  (you can also add mongodb addons from your heroku dashboard), you can run $heroku config to get the mongodb connection string for prod.
+#### set your heroku env variables:   eg:  $heroku config:set JWT_SECRET=ASDFAsdfsd3567xfSDFSDFG
