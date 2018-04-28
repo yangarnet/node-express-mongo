@@ -1,6 +1,0 @@
-{
-    "name":"My Express Mongo App - Production",
-    "db": {
-        "connection":"mongodb://${user}:${password}@ds139929.mlab.com:39929/mymongodb"
-    }
-}

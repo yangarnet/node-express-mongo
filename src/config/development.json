@@ -1,6 +1,0 @@
-{
-    "name":"My Express Mongo App - Development",
-    "db": {
-        "connection":"mongodb://localhost:27017/myDevMongodb"
-    }
-}

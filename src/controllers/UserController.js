@@ -15,7 +15,7 @@ class UserController {
         await user.save()
             .then(user => user.genAuthToken())
             .then(token => { 
-                res.header('x-auth',token).send(user); 
+                res.header(process.env.AUTH_TYPE, token).send(user); 
             })
             .catch(err => {
                 res.status(400).send(err);
@@ -24,7 +24,7 @@ class UserController {
 
     // auth middleware
     static authenticate(req, res, next) {
-        let token = req.header('x-auth');
+        let token = req.header(process.env.AUTH_TYPE);
         userModel.findByToken(token)
                  .then(user => {
                     if (!user) {
@@ -48,7 +48,7 @@ class UserController {
                  .then(user => {
                      return user.genAuthToken()
                                 .then(token=> {
-                                    res.header('x-auth', token).send(user);
+                                    res.header(process.env.AUTH_TYPE, token).send(user);
                                 });
                  })
                  .catch(err => {

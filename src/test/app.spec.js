@@ -25,7 +25,7 @@ describe('test express app with todo controller', () => {
             const completed = true;
             request(app)
                 .post('/to-do')
-                .set('x-auth', users[0].tokens[0].token)
+                .set(process.env.AUTH_TYPE, users[0].tokens[0].token)
                 .send({content, completed, _creator: users[0]._id})
                 .expect(200)
                 .expect(res => {
@@ -49,7 +49,7 @@ describe('test express app with todo controller', () => {
         it('should NOT create a new todo with invalid data', (done) => {
             const content = 'learn write express test';
             request(app).post('/to-do')
-                        .set('x-auth', users[0].tokens[0].token)
+                        .set(process.env.AUTH_TYPE, users[0].tokens[0].token)
                         .send({content})
                         .expect(400)
                         .end((err, res) => {
@@ -69,7 +69,7 @@ describe('test express app with todo controller', () => {
     describe('GET todo', () => {
         it('should get ALL todos for AUTHORISED user', (done) => {
             request(app).get('/to-do')
-                        .set('x-auth', users[0].tokens[0].token)
+                        .set(process.env.AUTH_TYPE, users[0].tokens[0].token)
                         .expect(200)
                         .expect(res => {
                             expect(res.body.todos).not.null;
@@ -79,7 +79,7 @@ describe('test express app with todo controller', () => {
     
         it('should get todo by ID', (done) => {
             request(app).get(`/to-do/${todos[0]._id.toHexString()}`)
-                        .set('x-auth', users[0].tokens[0].token)
+                        .set(process.env.AUTH_TYPE, users[0].tokens[0].token)
                         .expect(200)
                         .expect(response => {
                             expect(response.body.todo).not.null;
@@ -91,14 +91,14 @@ describe('test express app with todo controller', () => {
     
         it('GET:/to-do/:todoId - should return 404 when todo not found by id', (done) => {
             request(app).get(`/to-do/${(new ObjectID()).toHexString}`)
-                        .set('x-auth', users[0].tokens[0].token)
+                        .set(process.env.AUTH_TYPE, users[0].tokens[0].token)
                         .expect(404)
                         .end(done);
         });
     
         it('GET:/to-do/:todoId - should return 404 for non-object ids', (done) => {
             request(app).get(`/to-do/asdfw45634563}`)
-                        .set('x-auth', users[0].tokens[0].token)
+                        .set(process.env.AUTH_TYPE, users[0].tokens[0].token)
                         .expect(404)
                         .end(done);
         });
@@ -109,7 +109,7 @@ describe('test express app with todo controller', () => {
         it('DELETE:/to-do/:todoId - should delete todo by correct id', (done) => {
             const hexId = todos[0]._id.toHexString();
             request(app).delete(`/to-do/${hexId}`)
-                        .set('x-auth', users[0].tokens[0].token)
+                        .set(process.env.AUTH_TYPE, users[0].tokens[0].token)
                         .expect(200)
                         .expect(res => {
                             expect(res.status).to.be.eq(200);
@@ -128,7 +128,7 @@ describe('test express app with todo controller', () => {
                 completed: true
             };
             request(app).put(`/to-do/${id}`)
-                        .set('x-auth', users[0].tokens[0].token)
+                        .set(process.env.AUTH_TYPE, users[0].tokens[0].token)
                         .send(update)
                         .expect(200)
                         .expect(res => {
@@ -147,7 +147,7 @@ describe('test express app with todo controller', () => {
                 completed: true
             };
             request(app).patch(`/to-do/${id}`)
-                        .set('x-auth', users[1].tokens[0].token)
+                        .set(process.env.AUTH_TYPE, users[1].tokens[0].token)
                         .send(toUpdate)
                         .expect(200)
                         .expect(res => {
@@ -165,7 +165,7 @@ describe('User test case for GET & POST', () => {
     describe('GET user /find-me', () => {
         it('should return user if authenticated', (done) => {
             request(app).get('/find-me')
-                        .set('x-auth', users[0].tokens[0].token)
+                        .set(process.env.AUTH_TYPE, users[0].tokens[0].token)
                         .expect(200)
                         .expect(res => {
                             expect(res.body._id).to.be.eq(users[0]._id.toHexString());
@@ -177,7 +177,7 @@ describe('User test case for GET & POST', () => {
 
         it('should NOT return 401 if UN-authenticated', (done) => {
             request(app).get('/find-me')
-                        .set('x-auth', 'asdfasdfasdfasfasdfsad')
+                        .set(process.env.AUTH_TYPE, 'asdfasdfasdfasfasdfsad')
                         .expect(401)
                         .expect(res => {
                             expect(res.body).to.deep.equal({});
@@ -195,7 +195,7 @@ describe('User test case for GET & POST', () => {
                         .send({email, password})
                         .expect(200)
                         .expect(res => {
-                            expect(res.headers['x-auth']).to.be.not.null;
+                            expect(res.headers[process.env.AUTH_TYPE]).to.be.not.null;
                             expect(res.body._id).to.be.not.null;
                             expect(res.body.email).to.be.not.null;
                         })
@@ -233,7 +233,7 @@ describe('User test case for GET & POST', () => {
                         .send({email: users[1].email, password: users[1].password})
                         .expect(200)
                         .expect(res => {
-                            expect(res.headers['x-auth']).to.be.not.null;
+                            expect(res.headers[process.env.AUTH_TYPE]).to.be.not.null;
                             expect(res.body._id).to.be.not.null;
                             expect(res.body.email).to.be.equal(users[1].email);
                         })
@@ -244,8 +244,8 @@ describe('User test case for GET & POST', () => {
                             userModel.findById(users[1]._id)
                                      .then(user => {
                                          expect(user.tokens[0]).include({
-                                             access: 'auth'
-                                             //token: res.headers['x-auth']
+                                             access: 'auth',
+                                             token: res.headers[process.env.AUTH_TYPE]
                                          });
                                          done();
                                      }).catch(e => done(e));
@@ -257,7 +257,7 @@ describe('User test case for GET & POST', () => {
                         .send({email: users[1].email, password: users[1].password + 'test'})
                         .expect(400)
                         .expect(res => {
-                            expect(res.headers['x-auth']).to.be.undefined;
+                            expect(res.headers[process.env.AUTH_TYPE]).to.be.undefined;
                         })
                         .end((err, res) => {
                             if (err) {
@@ -275,7 +275,7 @@ describe('User test case for GET & POST', () => {
     describe('DELETE: user token after logout', () => {
         it("should remove auth token on logout", (done) => {
             request(app).delete('/user/me/token')
-                        .set('x-auth', users[0].tokens[0].token)
+                        .set(process.env.AUTH_TYPE, users[0].tokens[0].token)
                         .expect(200)
                         .end((err, res) => {
                             if (err) {
