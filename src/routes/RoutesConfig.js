@@ -25,7 +25,7 @@ const routes = (app) => {
     // put on the authentication here for get/post todo
     app.route('/to-do')
        .get(userController.authenticate, todoCtrl.getTodo)
-       .post(userController.authenticate, todoCtrl.addTodo);
+       .post([userController.authenticate, todoController.preSaveMiddleware], todoCtrl.addTodo);
 
     app.route('/to-do/:todoId')
        .get(userController.authenticate, todoCtrl.getTodoById)

@@ -36,6 +36,21 @@ class todoController {
                 });
     }
 
+    static preSaveMiddleware(req, res, next) {
+        const payload = _.pick(req.body, ['content']);
+        todoModel.findOne({ content: payload.content, _creator: req.user._id})
+            .then(todo => {
+                if (todo) {
+                    return res.status(400).send({msg: 'cannot create duplciate todos for same user'});
+                }
+                next();
+            })
+            .catch(err => {
+                res.status(401).send(err);
+                next();
+            });
+    }
+
     getTodoById(req, res) {
         // this todoId is the as the routes written
         const id = req.params.todoId;
