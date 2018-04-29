@@ -7,7 +7,7 @@ const user = configValue.user;
 const password = configValue.pwd;
 
 const mongoDb = {
-    production: `mongodb://${user}:${password}@ds261429.mlab.com:61429/mymongodb`
+    production: `mongodb://${user}:${password}@ds161539.mlab.com:61539/mymongodb`
 };
 
 export const dbConfigure = (/*app*/env) => {
