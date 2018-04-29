@@ -212,19 +212,19 @@ describe('User test case for GET & POST', () => {
                         });
         });
 
-        // it('should NOT create a new user if invalid request', (done) => {
-        //     request(app).post('/add-user')
-        //                 .send({email: 'aasd', password: 'asdf'})
-        //                 .expect(400)
-        //                 .end(done());
-        // });
+        it('should NOT create a new user if invalid request', (done) => {
+            request(app).post('/add-user')
+                        .send({email: 'aasd', password: 'asdf'})
+                        .expect(400)
+                        .end(done());
+        });
 
-        // it('should NOT create a new user if email in use', done => {
-        //     request(app).post('/add-user')
-        //                 .send({email: users[0].email, password: 'asdf'})
-        //                 .expect(400)
-        //                 .end(done());
-        // });
+        it('should NOT create a new user if email in use', done => {
+            request(app).post('/add-user')
+                        .send({email: users[0].email, password: 'asdf'})
+                        .expect(400)
+                        .end(done());
+        });
     });
 
     describe('POST: user login', () => {
@@ -244,8 +244,8 @@ describe('User test case for GET & POST', () => {
                             userModel.findById(users[1]._id)
                                      .then(user => {
                                          expect(user.tokens[0]).include({
-                                             access: 'auth'
-                                             //token: res.headers[process.env.AUTH_TYPE]
+                                             access: 'auth',
+                                             token: res.headers[process.env.AUTH_TYPE]
                                          });
                                          done();
                                      }).catch(e => done(e));
