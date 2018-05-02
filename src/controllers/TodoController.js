@@ -2,19 +2,24 @@ import { todoModel } from '../models/TodoModel';
 import { ObjectID } from 'mongodb';
 import _ from 'lodash';
 
-// all the db related work will be around todoModel .
 class todoController {
 
     constructor() {}
 
-    getTodo(req, res) {
-        todoModel.find({_creator: req.user._id})
-                 .then(todos => {
-                     res.send({todos});
-                 })
-                 .catch(err => {
-                     res.status(404).send();
-                 });
+    async getTodo(req, res) {
+        // todoModel.find({_creator: req.user._id})
+        //          .then(todos => {
+        //              res.send({todos});
+        //          })
+        //          .catch(err => {
+        //              res.status(404).send();
+        //          });
+        try {
+            const todos = await todoModel.find({_creator: req.user._id});
+            res.send({todos});
+        } catch(err) {
+            res.status(404).send();
+        }
     }
 
     addTodo(req, res) {
@@ -36,19 +41,29 @@ class todoController {
                 });
     }
 
-    static preSaveMiddleware(req, res, next) {
+    static async preSaveMiddleware(req, res, next) {
         const payload = _.pick(req.body, ['content']);
-        todoModel.findOne({ content: payload.content, _creator: req.user._id})
-            .then(todo => {
-                if (todo) {
-                    return res.status(400).send({msg: 'cannot create duplciate todos for same user'});
-                }
-                next();
-            })
-            .catch(err => {
-                res.status(401).send(err);
-                next();
-            });
+        // todoModel.findOne({ content: payload.content, _creator: req.user._id})
+        //     .then(todo => {
+        //         if (todo) {
+        //             return res.status(400).send({msg: 'cannot create duplciate todos for same user'});
+        //         }
+        //         next();
+        //     })
+        //     .catch(err => {
+        //         res.status(401).send(err);
+        //         next();
+        //     });
+        try {
+            const todo = await todoModel.findOne({ content: payload.content, _creator: req.user._id});
+            if (todo) {
+                res.status(400).send({msg: 'cannot create duplciate todos for same user'});
+            }
+            next();
+        } catch(e) {
+            res.status(401).send(err);
+            next();
+        }
     }
 
     getTodoById(req, res) {
