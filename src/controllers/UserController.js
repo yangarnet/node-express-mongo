@@ -11,15 +11,13 @@ class UserController {
         // using lodash to return our payload.
         const payload = _.pick(req.body, ['email', 'password']);
         const user = new userModel(payload);
-
-        await user.save()
-            .then(user => user.genAuthToken())
-            .then(token => { 
-                res.header(process.env.AUTH_TYPE, token).send(user); 
-            })
-            .catch(err => {
-                res.status(400).send(err);
-            });
+        try {
+            await user.save();
+            const token = await user.genAuthToken(); // call the instance method
+            res.header(process.env.AUTH_TYPE, token).send(user); 
+        } catch(err) {
+            res.status(400).send(err);
+        }
     }
 
     // auth middleware

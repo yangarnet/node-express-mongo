@@ -1,30 +1,19 @@
 import { contactModel } from '../models/ContactModel';
 
-export const addNewContact = (req, res) => {
+export const addNewContact =  async (req, res) => {
     
     // create a new document from the model by passing req.body
     let newContact = new contactModel(req.body);
 
-    newContact.print();
-    // call instance save method
-    // newContact.save((err, contact) => {
-    //     if (err) {
-    //         res.send(err);
-    //     }
-    //     // response the newly added contact
-    //     res.json(contact);
-    // });
-    newContact.save().then(resoponse => {
+    try {
+        const resoponse = await newContact.save();
         res.json(resoponse);
-    }, error => {
-        res.send(error);
-    });
+    } catch(err) {
+        res.status(400).send(err);
+    }
 };
 
 export const getContacts = (req, res) => {
-    // using Model to findout all documents.
-    // you can search the model with schema keywords.
-    // ContactModel.find({ firstName: 'sdfgsdfgsdfg' },(err, contacts) =>{});
 
     contactModel.find({}, (err, contacts) => {
         if (err) {
@@ -39,7 +28,6 @@ export const getContactById = (req, res) => {
         if (err) {
             res.send(err);
         }
-        contact.print();
         contact.findContactWithSameFirstName((err, list)=>{
           if(err) {
             console.log('error in finding.....');

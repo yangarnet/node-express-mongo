@@ -7,13 +7,6 @@ class todoController {
     constructor() {}
 
     async getTodo(req, res) {
-        // todoModel.find({_creator: req.user._id})
-        //          .then(todos => {
-        //              res.send({todos});
-        //          })
-        //          .catch(err => {
-        //              res.status(404).send();
-        //          });
         try {
             const todos = await todoModel.find({_creator: req.user._id});
             res.send({todos});
@@ -22,7 +15,7 @@ class todoController {
         }
     }
 
-    addTodo(req, res) {
+    async addTodo(req, res) {
         // new a document, each document is an instance of the Model
         const payload = _.pick(req.body, ['content', 'completed']);
         const newTodo = new todoModel({
@@ -32,28 +25,16 @@ class todoController {
             _creator: req.user._id
         });
 
-        newTodo.save()
-               .then(todo => {
-                    res.json(todo);
-                })
-                .catch(err => {
-                    res.status(400).send(err);
-                });
+        try {
+            const todo = await newTodo.save();
+            res.json(todo);
+        } catch(err) {
+            res.status(400).send(err);
+        }       
     }
 
     static async preSaveMiddleware(req, res, next) {
         const payload = _.pick(req.body, ['content']);
-        // todoModel.findOne({ content: payload.content, _creator: req.user._id})
-        //     .then(todo => {
-        //         if (todo) {
-        //             return res.status(400).send({msg: 'cannot create duplciate todos for same user'});
-        //         }
-        //         next();
-        //     })
-        //     .catch(err => {
-        //         res.status(401).send(err);
-        //         next();
-        //     });
         try {
             const todo = await todoModel.findOne({ content: payload.content, _creator: req.user._id});
             if (todo) {
@@ -66,20 +47,19 @@ class todoController {
         }
     }
 
-    getTodoById(req, res) {
+    async getTodoById(req, res) {
         // this todoId is the as the routes written
         const id = req.params.todoId;
         if (ObjectID.isValid(id)) {
-        todoModel.findOne({ _id: id , _creator: req.user._id })
-                 .then(todo => {
-                    if (!todo) {
-                        return res.status(404).end();
-                    }
-                    res.json({todo});
-                 })
-                 .catch(err => {
-                    res.status(400).send(err);
-                 });
+            try {
+                const todo = await todoModel.findOne({ _id: id , _creator: req.user._id });
+                if (!todo) {
+                    return res.status(404).end();
+                }
+                res.json({todo});
+            } catch(err) {
+                res.status(400).send(err);
+            }
         } else {
             res.status(404).send('ObjectID is invalid for query');
         }
@@ -95,63 +75,53 @@ class todoController {
                  });
     }
 
-    updateTodoById(req, res) {
+    async updateTodoById(req, res) {
         const id = req.params.todoId;
-
-        // choose what you want to update
         const body = _.pick(req.body, ['content', 'completed']);
-        // see the following two about how to get documents
         if (!ObjectID.isValid(id)) {
             return res.status(404).end();
         }
-
-        todoModel.findOneAndUpdate({ _id: id, _creator: req.user._id }, { $set: body }, {new: true})
-                .then(todo => {
-                    if (!todo) {
-                        return res.status(404).send();
-                    }
-                    res.send({todo});
-                })
-                .catch(e => {
-                    res.status(400).send();
-                });
+        try {
+            const todo = await todoModel.findOneAndUpdate({ _id: id, _creator: req.user._id }, { $set: body }, {new: true});
+            if (!todo) {
+                return res.status(404).send();
+            }
+            res.send({todo});
+        } catch(err) {
+            res.status(400).send(err);
+        }
     }
 
-    // this is a better version to update the todo
-    patchTodoById(req, res) {
+    async patchTodoById(req, res) {
         const id = req.params.todoId;
-        // now with lodash to pick whatever properties you want from the req body, nice
         const body = _.pick(req.body, ['content', 'completed']);
-
         if (!ObjectID.isValid(id)) {
             return res.status(404).send();
         }
 
-        todoModel.findOneAndUpdate({ _id: id , _creator: req.user._id }, { $set: body }, {new: true})
-                 .then(todo => {
-                     if (!todo) {
-                         return res.status(404).send();
-                     }
-                     res.send({todo});
-                 })
-                 .catch(e => res.status(400).send());
+        try {
+            const todo = await todoModel.findOneAndUpdate({ _id: id , _creator: req.user._id }, { $set: body }, {new: true});
+            if (!todo) {
+                return res.status(404).send();
+            }
+            res.send({todo});
+        } catch(err) {
+            res.status(400).send()
+        }
     }
 
-    deleteTodoById(req, res) {
+    async deleteTodoById(req, res) {
         const id = req.params.todoId;
         if (ObjectID.isValid(id)) {
-            todoModel.findByIdAndRemove(id)
-            .then(todo => {
+            try {
+                const todo = await todoModel.findByIdAndRemove(id);
                 if (!todo) {
                     res.status(404).send();
                 }
                 res.send({todo});
-            }, err => {
+            } catch(err) {
                 res.status(400).send(err);
-            })
-            .catch(e => {
-                res.status(400).send(e);
-            });
+            }
         }
         else {
             res.status(400).send();
