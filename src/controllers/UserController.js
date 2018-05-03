@@ -21,46 +21,41 @@ class UserController {
     }
 
     // auth middleware
-    static authenticate(req, res, next) {
+    static async authenticate(req, res, next) {
         let token = req.header(process.env.AUTH_TYPE);
-        userModel.findByToken(token)
-                 .then(user => {
-                    if (!user) {
-                        return Promise.reject();
-                    }          
-                    // add new properties to request object 
-                    // after authenticated for associating user to todos
-                    req.user = user;
-                    req.token = token;
-                    next();
-                })
-                .catch(e => { 
-                    res.status(401).send(e);
-                });
+        try {
+            const user = await userModel.findByToken(token);
+            if (!user) {
+                throw new Error('cannot find the user by token');
+            }
+            req.user = user;
+            req.token = token;
+            next();
+        } catch(err) {
+            res.status(401).send(err);
+        }
     }
 
-    logIn(req, res) {
+    async logIn(req, res) {
         const body = _.pick(req.body, ['email', 'password']);
-        
-        userModel.findByCredentials(body.email, body.password)
-                 .then(user => {
-                     return user.genAuthToken()
-                                .then(token=> {
-                                    res.header(process.env.AUTH_TYPE, token).send(user);
-                                });
-                 })
-                 .catch(err => {
-                     res.status(400).send(err);
-                 });
+        try {
+            const user = await userModel.findByCredentials(body.email, body.password);
+            const token = await user.genAuthToken();
+            if (token) {
+                res.header(process.env.AUTH_TYPE, token).send(user);
+            }
+        } catch (err) {
+            res.status(400).send(err);
+        }
     }
 
-    removeToken(req, res) {
-        req.user.removeToken(req.token)
-                .then(() => {
-                    res.status(200).send();
-                }, () => {
-                    res.status(401).send();
-                });
+    async removeToken(req, res) {
+        try {
+            await req.user.removeToken(req.token);
+            res.status(200).send();
+        } catch (err) {
+            res.status(401).send();
+        }
     }
 
 }
