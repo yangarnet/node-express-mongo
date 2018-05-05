@@ -7,13 +7,14 @@ import middleWare from './src/middleware/config';
 import envConfig from './src/config/config.js';
 
 const app = express();
+const admin = express();
 
 const dev = 'development';
 const env = process.env.NODE_ENV || dev;
 
 envConfig(env);
 dbConfigure(env);
-middleWare(app);
+middleWare(app, admin);
 routes(app);
 
 app.set('view engine', 'pug');
@@ -26,6 +27,11 @@ app.get('/', (req, res) => {
 
 app.get('/load-view', function (req, res) {
     res.render('index', { title: 'Hey', message: 'Hello there!, render the view from view template' })
+});
+
+admin.get('/', (req, res) => {
+    console.log(`admin mountpath path: ${admin.mountpath}`);
+    res.send('welcome to admin page');
 });
 
 app.listen(process.env.PORT, () => {

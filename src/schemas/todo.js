@@ -21,6 +21,7 @@ const todo = {
     // associate the todo with a user
     _creator: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'users', // the name of the user model.
         required: true
     }
 };

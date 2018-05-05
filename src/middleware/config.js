@@ -13,7 +13,7 @@ const myLogger = (req, res, next) => {
 };
 
 
-const middleWare = (app) => {
+const middleWare = (app, admin) => {
 
     // setup http header for security
     app.use(helmet());
@@ -51,6 +51,7 @@ const middleWare = (app) => {
     // user auth middleware
     app.use('/find-me', UserController.authenticate);
 
+    app.use('/admin', admin);
 };
 
 export default middleWare;

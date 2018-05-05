@@ -22,19 +22,21 @@ const routes = (app) => {
     // add a new controller and use it methods
     const todoCtrl = new todoController();
     
-    // put on the authentication here for get/post todo
+    // optimize authentication middleware for all todo routes
+    app.all('/to-do*', userController.authenticate);
+
     app.route('/to-do')
-       .get(userController.authenticate, todoCtrl.getTodo)
-       .post([userController.authenticate, todoController.preSaveMiddleware], todoCtrl.addTodo);
+       .get(todoCtrl.getTodo)
+       .post([todoController.preSaveMiddleware], todoCtrl.addTodo);
 
     app.route('/to-do/:todoId')
-       .get(userController.authenticate, todoCtrl.getTodoById)
-       .put(userController.authenticate, todoCtrl.updateTodoById)
-       .delete(userController.authenticate, todoCtrl.deleteTodoById)
-       .patch(userController.authenticate, todoCtrl.patchTodoById);
+       .get(todoCtrl.getTodoById)
+       .put(todoCtrl.updateTodoById)
+       .delete(todoCtrl.deleteTodoById)
+       .patch(todoCtrl.patchTodoById);
     
     app.route('/to-do/:todo')
-       .get(userController.authenticate, todoCtrl.getTodoByName);
+       .get(todoCtrl.getTodoByName);
     
     const userCtrl = new userController();
 
