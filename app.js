@@ -22,7 +22,6 @@ app.set("views", "./views");
 
 app.get("/", (req, res) => {
   res.end(JSON.stringify(process.env));
-  //res.end(app.get('env'));
 });
 
 app.get("/load-view", function(req, res) {
