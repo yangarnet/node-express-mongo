@@ -21,10 +21,7 @@ app.set("view engine", "pug");
 app.set("views", "./views");
 
 app.get("/", (req, res) => {
-  res.status(200).json({
-    port: process.env.PORT,
-    NODE_ENV: process.env.NODE_ENV
-  });
+  res.end(JSON.stringify(process.env));
   //res.end(app.get('env'));
 });
 
