@@ -2,7 +2,6 @@
 
 import express from "express";
 import routes from "./src/routes/RoutesConfig";
-import { dbConfigure } from "./src/dbconfig/config";
 import middleWare from "./src/middleware/config";
 import envConfig from "./src/config/config.js";
 
@@ -13,7 +12,6 @@ const dev = "development";
 const env = process.env.NODE_ENV || dev;
 
 envConfig(env);
-dbConfigure(env);
 middleWare(app, admin);
 routes(app);
 
