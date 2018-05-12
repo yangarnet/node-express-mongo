@@ -19,7 +19,9 @@ app.set("view engine", "pug");
 app.set("views", "./views");
 
 app.get("/", (req, res) => {
-  res.end(JSON.stringify(process.env));
+  res.json({
+    NODE_ENV: process.env.NODE_ENV
+  });
 });
 
 app.get("/load-view", function(req, res) {
