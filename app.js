@@ -20,7 +20,7 @@ app.set("views", "./views");
 
 app.get("/", (req, res) => {
   res.json({
-    NODE_ENV: process.env.NODE_ENV
+    NODE_ENV: process.env
   });
 });
 
@@ -38,6 +38,7 @@ admin.get("/", (req, res) => {
 
 app.listen(process.env.PORT, () => {
   console.log(`server running @ port ${process.env.PORT}`);
+  console.log(JSON.stringify(process.env.NODE_ENV));
 });
 
 // export for supertest

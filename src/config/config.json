@@ -5,6 +5,12 @@
     "JWT_SECRET": "ADsdfhyuiobbvHJDGHJDGSR556XFGSsdg",
     "AUTH_TYPE": "x-auth"
   },
+  "docker_development": {
+    "PORT": 5001,
+    "MONGODB_URL": "mongodb://mongodb:27017/myDevMongodb",
+    "JWT_SECRET": "ADsdfhyuiobbvHJDGHJDGSR556XFGSsdg",
+    "AUTH_TYPE": "x-auth"
+  },
   "test": {
     "PORT": 3002,
     "MONGODB_URL": "mongodb://localhost:27017/myTestMongodb",

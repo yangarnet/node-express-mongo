@@ -22,7 +22,7 @@ const envConfig = env => {
       console.log("you are connected!");
     },
     err => {
-      console.log("[Sorry] - mongodb connection error");
+      console.log("[Sorry] - mongodb connection error", err);
     }
   );
 };
