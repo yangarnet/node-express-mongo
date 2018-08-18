@@ -17,7 +17,7 @@ WORKDIR /usr/src/app
 # The <src> path must be inside the context of the build; you cannot COPY ../something /something
 # COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "."]
 # the . here means the current dir where the dockerfile sits
-COPY package.json . 
+COPY package*.json . 
 
 
 # run npm to install dependencies
@@ -30,20 +30,12 @@ COPY . /usr/src/app
 RUN npm run build
 
 
-# remove development dependencies.
+# remove development dependencies for production
 RUN npm prune --production
 
 # set the port, the container will listen to 3000 at runtime
 EXPOSE 3000
 
 # tells docker how to run your application after the image is built. finally run the app
-CMD npm start
+CMD npm deploy:prod
 
-# build you docker image with tag name :
-# docker build -t tag-name:tag-version(like 1.0, etc) . 
-
-# run your image
-# docker run -p 80:3000 {image-id}   # this cmd is bind container port 3000 to localhoust port 80
-
-# stop a docker contaimer: $ docker kill <image id>
-# with docker compose, you don't have to run docker build -t image:version .  to run docker container

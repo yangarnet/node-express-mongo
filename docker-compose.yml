@@ -7,18 +7,18 @@ version: '2.1'
 services:
   web: # name of the service
     image: node-express-mongo
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     volumes:
       - ./:/usr/src/app
-    environment:
-      NODE_ENV: docker_development
-    ports: # specify port forwarding
-      - "3000:5001" # meaning: forward the exposed port 3000 on the container to port 5000 on host machine, check config.json
-    depends_on:
-      - mongodb # depends on other servie by given name, the service name should be consistent with 
-  mongodb: #config.json: "MONGODB_URL": "mongodb://mongodb:27017/myDevMongodb"; the key <mongodb:27017>
-    image: mongo
-    volumes:
-      - ./data:/data/db
-    ports: 
-      - "27017:27017"
+    #ports: # specify port forwarding
+    #  - "3000:5001" # meaning: forward the exposed port 3000 on the container to port 5000 on host machine, check config.json
+  #   depends_on:
+  #     - mongodb # depends on other servie by given name, the service name should be consistent with 
+  # mongodb: #config.json: "MONGODB_URL": "mongodb://mongodb:27017/myDevMongodb"; the key <mongodb:27017>
+  #   image: mongo
+  #   volumes:
+  #     - ./data:/data/db
+  #   ports: 
+  #     - "27017:27017"

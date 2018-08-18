@@ -1,0 +1,8 @@
+
+# tell which versioin of docker compose to use.
+version: '2.1'
+
+services:
+  web: # name of the service
+    environment:
+      NODE_ENV: production

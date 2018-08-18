@@ -5,6 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "babel-node --presets es2015 app.js",
+    "deploy:dev": "docker-compose -f docker-compose.yml -f docker-compose-dev.yml up --build",
+    "deploy:prod": "docker-compose -f docker-compose.yml -f docker-compose-prod.yml up --build",
     "start-watch": " nodemon --exec 'npm start'",
     "compile": "babel app.js src -d dist --source-maps --watch",
     "build": "babel app.js src -d dist --source-maps",
