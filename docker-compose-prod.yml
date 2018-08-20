@@ -1,6 +1,6 @@
 
 # tell which versioin of docker compose to use.
-version: '2.1'
+version: '3'
 
 services:
   web: # name of the service

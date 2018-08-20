@@ -1,6 +1,7 @@
+# define and run multiple container app
 
 # tell which versioin of docker compose to use.
-version: '2.1'
+version: "3"
 
 # defined services in docker compose, then just run $ docker-compose up to start everything.
 # services: define a list of container to run in the app
@@ -15,10 +16,10 @@ services:
     #ports: # specify port forwarding
     #  - "3000:5001" # meaning: forward the exposed port 3000 on the container to port 5000 on host machine, check config.json
   #   depends_on:
-  #     - mongodb # depends on other servie by given name, the service name should be consistent with 
+  #     - mongodb # depends on other servie by given name, the service name should be consistent with
   # mongodb: #config.json: "MONGODB_URL": "mongodb://mongodb:27017/myDevMongodb"; the key <mongodb:27017>
   #   image: mongo
   #   volumes:
   #     - ./data:/data/db
-  #   ports: 
+  #   ports:
   #     - "27017:27017"
